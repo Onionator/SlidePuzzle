@@ -4,19 +4,19 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] puzzle = {{10, 3, 6, 4}, {1, 5, 8, 0}, {2, 13, 7 ,15}, {14, 9, 12, 11} };
+        int[][] puzzle = {{10, 3, 6, 4}, {1, 5, 8, 7}, {2, 13, 0 ,15}, {14, 9, 12, 11} };
         outputBoardToConsole(puzzle);
         System.out.println(Arrays.toString(findNumCoordinates(puzzle, 1)));
-        puzzle = moveRight(puzzle, findNumCoordinates(puzzle, 8));
-        outputBoardToConsole(puzzle);
-        puzzle = moveDown(puzzle, findNumCoordinates(puzzle, 6));
-        outputBoardToConsole(puzzle);
-        puzzle = moveLeft(puzzle, findNumCoordinates(puzzle, 4));
-        outputBoardToConsole(puzzle);
-        puzzle = moveUp(puzzle, findNumCoordinates(puzzle, 8));
-        outputBoardToConsole(puzzle);
-        puzzle = moveNumberLeft(puzzle, findNumCoordinates(puzzle, 4));
-        outputBoardToConsole(puzzle);
+//        puzzle = moveRight(puzzle, findNumCoordinates(puzzle, 8));
+//        outputBoardToConsole(puzzle);
+//        puzzle = moveDown(puzzle, findNumCoordinates(puzzle, 6));
+//        outputBoardToConsole(puzzle);
+//        puzzle = moveLeft(puzzle, findNumCoordinates(puzzle, 4));
+//        outputBoardToConsole(puzzle);
+//        puzzle = moveUp(puzzle, findNumCoordinates(puzzle, 8));
+//        outputBoardToConsole(puzzle);
+        puzzle = moveNumberLeft(puzzle, findNumCoordinates(puzzle, 5));
+//        outputBoardToConsole(puzzle);
     }
 
     static void SlidingPuzzle(int[][] puzzle) {
@@ -31,7 +31,7 @@ public class Main {
             // while zero is not to the left move zero in pattern to the left of the number
 
             // move the zero one left of the number if possible
-            while (x - 1 >= 0 && zeroCoordinates[1] != 0 && x -1 != zeroCoordinates[1]) {
+            while (zeroCoordinates[1] - 1 >= 0 && zeroCoordinates[1] != 0 && x - 1 != zeroCoordinates[1]) {
                 System.out.println(x - 1 >= 0);
                 puzzle = moveLeft(puzzle, zeroCoordinates);
                 outputBoardToConsole(puzzle);
@@ -39,7 +39,11 @@ public class Main {
             }
 
             // move the zero up if possible to the y array of the number
-            while () {
+        System.out.println(y != zeroCoordinates[0]);
+            while (zeroCoordinates[0] - 1 >= 0 && zeroCoordinates[0] != 0 && y != zeroCoordinates[0]) {
+                puzzle = moveUp(puzzle, zeroCoordinates);
+                outputBoardToConsole(puzzle);
+                zeroCoordinates = findNumCoordinates(puzzle, 0);
             }
 
         return puzzle;
