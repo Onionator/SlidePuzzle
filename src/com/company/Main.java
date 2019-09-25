@@ -15,32 +15,43 @@ public class Main {
         outputBoardToConsole(puzzle);
         puzzle = moveUp(puzzle, findNumCoordinates(puzzle, 8));
         outputBoardToConsole(puzzle);
+        puzzle = moveNumberLeft(puzzle, findNumCoordinates(puzzle, 4));
+        outputBoardToConsole(puzzle);
     }
 
     static void SlidingPuzzle(int[][] puzzle) {
 
     }
 
-    static void moveNumberLeft(int[][] puzzle, int[] coords) {
+    static int[][] moveNumberLeft(int[][] puzzle, int[] coords) {
         int y = coords[0];
         int x = coords[1];
         int[] zeroCoordinates = findNumCoordinates(puzzle, 0);
-        if (puzzle[y][x-1] != puzzle[y][(puzzle.length - 1)]) {
-            moveLeft(puzzle, coords);
-        } else {
+
             // while zero is not to the left move zero in pattern to the left of the number
 
-        }
+            // move the zero one left of the number if possible
+            while (x - 1 >= 0 && zeroCoordinates[1] != 0 && x -1 != zeroCoordinates[1]) {
+                System.out.println(x - 1 >= 0);
+                puzzle = moveLeft(puzzle, zeroCoordinates);
+                outputBoardToConsole(puzzle);
+                zeroCoordinates = findNumCoordinates(puzzle, 0);
+            }
+
+            // move the zero up if possible to the y array of the number
+            while () {
+            }
+
+        return puzzle;
     }
 
     static int[][] moveLeft(int[][] puzzle, int[] coords) {
         int y = coords[0];
         int x = coords[1];
-        if (puzzle[y][x-1] == 0) {
-            puzzle[y][x-1] = puzzle[y][x];
-            puzzle[y][x] = 0;
-            System.out.println("conditional works");
-        }
+        int tempNum = puzzle[y][x-1];
+        puzzle[y][x-1] = puzzle[y][x];
+        puzzle[y][x] = tempNum;
+        System.out.println("conditional works");
         return puzzle;
     }
 
@@ -58,9 +69,10 @@ public class Main {
     static int[][] moveUp(int[][] puzzle, int[] coords) {
         int y = coords[0];
         int x = coords[1];
-        if (puzzle[y-1][x] == 0) {
+        if (puzzle[y-1][x] == 0 || puzzle[y][x] == 0) {
+            int tempNum = puzzle[y-1][x];
             puzzle[y-1][x] = puzzle[y][x];
-            puzzle[y][x] = 0;
+            puzzle[y][x] = tempNum;
             System.out.println("conditional works");
         }
         return puzzle;
