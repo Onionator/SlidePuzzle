@@ -6,10 +6,10 @@
         * does zero need to move up, down, or not at all to be above the number
             * if zero needs to go up
                 * if zero is immediately below the number determine if it should go left or right before going up
-                    * if zero needs to go left
-                        * move zero left
-                    * else zero needs to go right
+                    * if zero needs to go right
                         * move zero right
+                    * else zero needs to go left
+                        * move zero left
                 * else if zero can move up
                     * move zero up
             * else if zero needs to go down
@@ -23,10 +23,10 @@
         * does zero need to move up, down, or not at all to be above the number
             * if zero needs to go down
                 * if zero is immediately above the number determine if it should go left or right before going down
-                    * if zero needs to go left
-                        * move zero left
-                    * else zero needs to go right
+                    * if zero needs to go right
                         * move zero right
+                    * else zero needs to go left
+                        * move zero left
                 * else if zero can move down
                         * move zero down
                 * else if zero needs to go up
@@ -70,3 +70,5 @@
                     * move zero down
                 * else if zero needs to go left
                     * move zero left
+
+## Logic for determining which pieces can be moved
