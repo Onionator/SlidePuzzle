@@ -4,19 +4,10 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] puzzle = {{10, 3, 6, 4}, {1, 5, 2, 7}, {8, 13, 0 ,15}, {14, 9, 12, 11} };
-        outputBoardToConsole(puzzle);
-        System.out.println(Arrays.toString(findNumCoordinates(puzzle, 1)));
-//        puzzle = moveRight(puzzle, findNumCoordinates(puzzle, 8));
-//        outputBoardToConsole(puzzle);
-//        puzzle = moveDown(puzzle, findNumCoordinates(puzzle, 6));
-//        outputBoardToConsole(puzzle);
-//        puzzle = moveLeft(puzzle, findNumCoordinates(puzzle, 4));
-//        outputBoardToConsole(puzzle);
-//        puzzle = moveUp(puzzle, findNumCoordinates(puzzle, 8));
-//        outputBoardToConsole(puzzle);
-        puzzle = moveZeroToLeftOfNumber(puzzle, 2);
-//        outputBoardToConsole(puzzle);
+        Puzzle puzzle = new Puzzle();
+        System.out.println(puzzle.printBoard());
+        puzzle.loopThroughMoves(8);
+
     }
 
     static void SlidingPuzzle(int[][] puzzle) {
@@ -191,3 +182,73 @@ public class Main {
     }
 
 }
+
+// while number is not in its place
+    // if number needs to move up
+        // does zero need to move up, down, or not at all to be above the number
+            // if zero needs to go up
+                // if zero is immediately below the number determine if it should go left or right before going up
+                    // if zero needs to go left
+                        // move zero left
+                    // else zero needs to go right
+                        // move zero right
+                // else if zero can move up
+                    // move zero up
+            // else if zero needs to go down
+                // move zero down
+            // else if zero needs to go left
+                // move zero left
+            // else if zero needs to go right
+                // move zero right
+
+    // else if number needs to go down
+        // does zero need to move up, down, or not at all to be above the number
+            // if zero needs to go down
+                // if zero is immediately above the number determine if it should go left or right before going down
+                    // if zero needs to go left
+                        // move zero left
+                    // else zero needs to go right
+                        // move zero right
+                // else if zero can move down
+                        // move zero down
+                // else if zero needs to go up
+                        // move zero up
+                // else if zero needs to go left
+                        // move zero left
+                // else if zero needs to go right
+                        // move zero right
+
+    // if number needs to go left
+        // does zero need to left up, right, or not at all to be above the number
+            // if zero needs to go left
+                 // if zero is immediately above the number determine if it should go up or down before going left
+                    // if zero needs to go down
+                        // move zero down
+                    // else zero needs to go up
+                        // move zero up
+                // else if zero can move left
+                    // move zero left
+                // else if zero needs to go up
+                    // move zero up
+                // else if zero needs to go down
+                    // move zero down
+                // else if zero needs to go right
+                    // move zero right
+
+
+    // if number needs to go right
+        // does zero need to left up, right, or not at all to be above the number
+            // if zero needs to go right
+                // if zero is immediately above the number determine if it should go up or down before going right
+                    // if zero needs to go down
+                        // move zero down
+                    // else zero needs to go up
+                        // move zero up
+                // else if zero can move right
+                    // move zero right
+                // else if zero needs to go up
+                    // move zero up
+                // else if zero needs to go down
+                    // move zero down
+                // else if zero needs to go left
+                    // move zero left
