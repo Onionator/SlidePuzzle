@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] puzzle = {{10, 3, 6, 4}, {1, 5, 8, 7}, {2, 13, 0 ,15}, {14, 9, 12, 11} };
+        int[][] puzzle = {{10, 3, 6, 4}, {1, 5, 2, 7}, {8, 13, 0 ,15}, {14, 9, 12, 11} };
         outputBoardToConsole(puzzle);
         System.out.println(Arrays.toString(findNumCoordinates(puzzle, 1)));
 //        puzzle = moveRight(puzzle, findNumCoordinates(puzzle, 8));
@@ -15,7 +15,7 @@ public class Main {
 //        outputBoardToConsole(puzzle);
 //        puzzle = moveUp(puzzle, findNumCoordinates(puzzle, 8));
 //        outputBoardToConsole(puzzle);
-        puzzle = moveZeroToLeftOfNumber(puzzle, findNumCoordinates(puzzle, 3), 3);
+        puzzle = moveZeroToLeftOfNumber(puzzle, 2);
 //        outputBoardToConsole(puzzle);
     }
 
@@ -23,60 +23,100 @@ public class Main {
 
     }
 
-    static int[][] moveZeroToLeftOfNumber(int[][] puzzle, int[] coords, int num) {
+    static int[][] moveZeroToLeftOfNumber(int[][] puzzle, int num) {
+        int[] coords = findNumCoordinates(puzzle, num);
         int y = coords[0];
         int x = coords[1];
         int[] zeroCoordinates = findNumCoordinates(puzzle, 0);
-
-        // while zero is not to the left move zero in pattern to the left of the number
-//        if (x - 1 >= 0 && puzzle[y][x - 1] != 0) {
-
-        // move the zero up if possible to the y array of the number
-        while (zeroCoordinates[0] - 1 >= 0 && zeroCoordinates[0] != 0 && y != zeroCoordinates[0]) {
-            puzzle = moveUp(puzzle, zeroCoordinates);
-            outputBoardToConsole(puzzle);
-            zeroCoordinates = findNumCoordinates(puzzle, 0);
-        }
-        // move the zero one left of the number if possible
-        while (zeroCoordinates[1] - 1 >= 0 && zeroCoordinates[1] != 0 && x - 1 != zeroCoordinates[1]) {
-                System.out.println(x - 1 >= 0);
-                puzzle = moveLeft(puzzle, zeroCoordinates);
-                outputBoardToConsole(puzzle);
-                zeroCoordinates = findNumCoordinates(puzzle, 0);
-            }
-//        }
         int endX = (num % puzzle.length) - 1;
         int endY = (num - 1) / puzzle.length;
-        int[] currentCoordinates = findNumCoordinates(puzzle, num);
-        while (!(currentCoordinates[1] == endX || currentCoordinates[0] == endY)) {
-//            zeroCoordinates = findNumCoordinates(puzzle, 0);
-            currentCoordinates = findNumCoordinates(puzzle, num);
-            if (currentCoordinates[1] - 1 >= 0) {
-                puzzle = moveLeft(puzzle, findNumCoordinates(puzzle, num));
-                System.out.println("Moved number left");
-                outputBoardToConsole(puzzle);
-                currentCoordinates = findNumCoordinates(puzzle, num);
+//y != endY && x != endX
+        // move zero to the left of the number
+        while (zeroCoordinates[0] != y || zeroCoordinates[1] != (x - 1)) {
+            System.out.println(zeroCoordinates[0] != y);
+            System.out.println(zeroCoordinates[1] != (x - 1));
+            //if it is possible and would be helpful to move zero up without moving the target number down then move it
+            if (zeroCoordinates[0] < y && (zeroCoordinates[0] - 1) != num) {
+                puzzle = moveUp(puzzle, zeroCoordinates);
+                zeroCoordinates = findNumCoordinates(puzzle, 0);
+                // //if it is possible and would be helpful to move zero down without moving the target number up then move it
+            } else if (zeroCoordinates[0] > y && (zeroCoordinates[0] + 1) != num && (zeroCoordinates[0] + 1) >= y ) {
+                puzzle = moveDown(puzzle, zeroCoordinates);
+                zeroCoordinates = findNumCoordinates(puzzle, 0);
+                // if it is possible and would be helpful to move zero left without moving the target number right then move it
+            } else if ((zeroCoordinates[1] - 1) >= x) {
+                puzzle = moveLeft(puzzle, zeroCoordinates);
+                zeroCoordinates = findNumCoordinates(puzzle, 0);
             }
-            if (currentCoordinates[0] + 1 < puzzle.length) {
-                puzzle = moveDown(puzzle, findNumCoordinates(puzzle, puzzle[currentCoordinates[0] - 1][currentCoordinates[1] + 1]));
-                System.out.println("Moved arbitrary number down");
-                outputBoardToConsole(puzzle);
-                currentCoordinates = findNumCoordinates(puzzle, num);
-            }
-            if (currentCoordinates[0] + 1 < puzzle.length && currentCoordinates[1] + 1 < puzzle.length) {
-                puzzle = moveRight(puzzle, findNumCoordinates(puzzle, puzzle[currentCoordinates[0] - 1][currentCoordinates[1]]));
-                System.out.println("Moved arbitrary number right");
-                outputBoardToConsole(puzzle);
-                currentCoordinates = findNumCoordinates(puzzle, num);
-            }
-            if (currentCoordinates[0] + 1 < puzzle.length && currentCoordinates[1] + 1 < puzzle.length) {
-                puzzle = moveUp(puzzle, findNumCoordinates(puzzle, num));
-                System.out.println("Moved arbitrary number right");
-                outputBoardToConsole(puzzle);
-                currentCoordinates = findNumCoordinates(puzzle, num);
-            }
-
+            outputBoardToConsole(puzzle);
         }
+
+        // while zero is not to the left move zero in pattern to the left of the number
+
+        // move the zero up if possible to the y array of the number
+//        while (zeroCoordinates[0] - 1 >= 0 && zeroCoordinates[0] != 0 && y != zeroCoordinates[0]) {
+//            puzzle = moveUp(puzzle, zeroCoordinates);
+//            outputBoardToConsole(puzzle);
+//            zeroCoordinates = findNumCoordinates(puzzle, 0);
+//        }
+//        // move the zero one left of the number if possible
+//        while (zeroCoordinates[1] - 1 >= 0 && zeroCoordinates[1] != 0 && x - 1 != zeroCoordinates[1]) {
+//                System.out.println(x - 1 >= 0);
+//                puzzle = moveLeft(puzzle, zeroCoordinates);
+//                outputBoardToConsole(puzzle);
+//                zeroCoordinates = findNumCoordinates(puzzle, 0);
+//            System.out.println("left left left left");
+//        }
+        // move the zero down if possible to the y array of the number
+//        while (zeroCoordinates[0] + 1 >= 0 && zeroCoordinates[0] != 0 && y != zeroCoordinates[0]) {
+//            puzzle = moveDown(puzzle, zeroCoordinates);
+//            outputBoardToConsole(puzzle);
+//            zeroCoordinates = findNumCoordinates(puzzle, 0);
+//        }
+//        // move the zero one right of the number if possible
+//        while (zeroCoordinates[1] + 1 >= 0 && zeroCoordinates[1] != 0 && x + 1 != zeroCoordinates[1]) {
+//            puzzle = moveRight(puzzle, zeroCoordinates);
+//            outputBoardToConsole(puzzle);
+//            zeroCoordinates = findNumCoordinates(puzzle, 0);
+//        }
+//        }
+//        endX = (num % puzzle.length) - 1;
+//        endY = (num - 1) / puzzle.length;
+//        System.out.println("endX: " + endX);
+//        System.out.println("endY: " + endY);
+//        int[] currentCoordinates = findNumCoordinates(puzzle, num);
+//        while ((currentCoordinates[1] != endX || currentCoordinates[0] != endY)) {
+////
+//            // moving num instead of zero. need to move zero  only and verify that zero is left of number.
+//            currentCoordinates = findNumCoordinates(puzzle, num);
+//            if (currentCoordinates[1] - 1 >= 0) {
+//                puzzle = moveLeft(puzzle, findNumCoordinates(puzzle, num));
+//                System.out.println("Moved number left");
+//                outputBoardToConsole(puzzle);
+//                currentCoordinates = findNumCoordinates(puzzle, num);
+//            }
+//            if (currentCoordinates[0] + 1 < puzzle.length) {
+//                puzzle = moveDown(puzzle, findNumCoordinates(puzzle, puzzle[currentCoordinates[0] + 1][currentCoordinates[1] + 1]));
+//                System.out.println("Moved arbitrary number down");
+//                outputBoardToConsole(puzzle);
+//                currentCoordinates = findNumCoordinates(puzzle, num);
+//            }
+//            if (currentCoordinates[0] + 1 < puzzle.length && currentCoordinates[1] + 1 < puzzle.length) {
+//                puzzle = moveRight(puzzle, findNumCoordinates(puzzle, puzzle[currentCoordinates[0] + 1][currentCoordinates[1]]));
+//                System.out.println("Moved arbitrary number right");
+//                outputBoardToConsole(puzzle);
+//                currentCoordinates = findNumCoordinates(puzzle, num);
+//            }
+//            if (currentCoordinates[0] + 1 < puzzle.length && currentCoordinates[1] + 1 < puzzle.length) {
+//                puzzle = moveUp(puzzle, findNumCoordinates(puzzle, num));
+//                System.out.println("Moved target number up");
+//                outputBoardToConsole(puzzle);
+//                currentCoordinates = findNumCoordinates(puzzle, num);
+//            }
+//
+//            System.out.println((currentCoordinates[0] == endY));
+//
+//        }
 
         return puzzle;
     }
@@ -84,7 +124,7 @@ public class Main {
     static int[][] moveLeft(int[][] puzzle, int[] coords) {
         int y = coords[0];
         int x = coords[1];
-        System.out.println(puzzle[y][x]);
+        System.out.println("doing leftward stuff " + puzzle[y][x]);
         if (x - 1 >= 0) {
             int tempNum = puzzle[y][x - 1];
             puzzle[y][x - 1] = puzzle[y][x];
@@ -111,7 +151,7 @@ public class Main {
         int y = coords[0];
         int x = coords[1];
         System.out.println(puzzle[y][x]);
-        if (y - 1 < puzzle.length) {
+        if (y - 1 >= 0) {
             int tempNum = puzzle[y - 1][x];
             puzzle[y - 1][x] = puzzle[y][x];
             puzzle[y][x] = tempNum;
