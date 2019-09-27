@@ -1,9 +1,10 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Puzzle {
-    int[][] board = {{10, 3, 11, 4}, {1, 5, 15, 7}, {8, 13, 6, 2}, {12, 9, 14, 0} };
+    int[][] board = {{10, 3, 11, 4}, {1, 5, 15, 7}, {8, 6, 13, 2}, {12, 9, 14, 0} };
     int boardLength = board.length;
 
     protected Puzzle() {
@@ -87,18 +88,22 @@ public class Puzzle {
         int[] zeroCoordinates = find(0);
         int[] numEndCoordinates = {(num - 1) / boardLength, (num % boardLength) - 1};
         boolean numIsFarthestRight = false;
+        boolean numIsFarthestDown = false;
+        boolean initiateBottomLeftMoveSequence = false;
         if (numEndCoordinates[1] == -1) {
+            // if the number belongs at the far right of the puzzle then change its end coordinates to be at the far right and one below where it should be
             numEndCoordinates[0] = numEndCoordinates[0] + 1;
-            numEndCoordinates[1] = 3;
+            numEndCoordinates[1] = boardLength - 1;
             numIsFarthestRight = true;
+        } else if (numEndCoordinates[0] == boardLength - 1 && numEndCoordinates[1] <= boardLength - 3) {
+            // if the number belongs at the bottom of the puzzle and is not within the bottom right 3x3 squares change its coordinates to the one right of where it is supposed to go
+            numEndCoordinates[1] += 1;
+            numIsFarthestDown = true;
         }
         while (!(Arrays.equals(numCoordinates, numEndCoordinates))) {
             // while number is not in its place
             if (numCoordinates[0] - numEndCoordinates[0] > 0) {
                 System.out.println("Num needs to go up.");
-                if (zeroCoordinates[0] - 1 >= 0) {
-                    System.out.println("Number above zero is: " + board[zeroCoordinates[0] - 1][zeroCoordinates[1]]);
-                }
                 // if number needs to move up
                 // does zero need to move up, down, or not at all to be above the number
                 if (zeroCoordinates[0] - numCoordinates[0] >= 0) {
@@ -207,10 +212,13 @@ public class Puzzle {
                             // move zero up
                             moveUp(0);
                         }
-                    } else {
+                    } else if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - (boardLength - 1)) {
                         // else if zero can move left
                         // move zero left
                         moveLeft(0);
+                    } else {
+                        // zero is above bottom number and ready to initiate bottom corner move sequence
+                        initiateBottomLeftMoveSequence = true;
                     }
                 } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
                     // else if zero needs to go up
@@ -277,6 +285,10 @@ public class Puzzle {
             }
             zeroCoordinates = find(0);
             numCoordinates = find(num);
+            System.out.println(Arrays.equals(numCoordinates, numEndCoordinates));
+            System.out.println(Arrays.toString(numCoordinates));
+            System.out.println(Arrays.toString(numEndCoordinates));
+            System.out.println(numIsFarthestDown);
             if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestRight) {
                 // if the number is below where it needs to be and it is the last number in a row start the move sequence
                 if (Arrays.equals(zeroCoordinates, new int[] {numCoordinates[0] + 1, numCoordinates[1]})) {
@@ -301,6 +313,27 @@ public class Puzzle {
                 moveLeft(0);
                 System.out.println(printBoard());
                 moveDown(0);
+                System.out.println(printBoard());
+                break;
+            } else if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestDown && initiateBottomLeftMoveSequence) {
+                // number belongs on the bottom left corner and is currently one space to the right of it and the zero is above it.
+                moveUp(0);
+                System.out.println(printBoard());
+                moveLeft(0);
+                System.out.println(printBoard());
+                moveDown(0);
+                System.out.println(printBoard());
+                moveDown(0);
+                System.out.println(printBoard());
+                moveRight(0);
+                System.out.println(printBoard());
+                moveUp(0);
+                System.out.println(printBoard());
+                moveLeft(0);
+                System.out.println(printBoard());
+                moveUp(0);
+                System.out.println(printBoard());
+                moveRight(0);
                 System.out.println(printBoard());
                 break;
             }

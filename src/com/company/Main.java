@@ -14,8 +14,8 @@ public class Main {
             puzzle.positionNumber(3);
             puzzle.positionNumber(4);
             puzzle.positionNumber(5);
-//            puzzle.positionNumber(9);
-//            puzzle.positionNumber(13);
+            puzzle.positionNumber(9);
+            puzzle.positionNumber(13);
 //            puzzle.positionNumber(6);
 //            puzzle.positionNumber(7);
 //            puzzle.positionNumber(8);
