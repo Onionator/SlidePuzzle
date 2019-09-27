@@ -267,3 +267,17 @@ public class Puzzle {
         }
     }
 }
+
+// while unsolved area == > 3x3
+    // solve the top row of numbers
+        // solve top left corner
+        // while != boardLength - 2
+            // solve next from the left without moving the one to the left
+        // solve the top right piece
+    // solve the left column of numbers without moving the top row
+        // while != boardLength - 2
+            // solve next from the top without moving the one above it
+        // solve the bottom left piece
+
+// solve the top row of unsolved numbers
+// solve the 2x3 puzzle of remaining tiles
