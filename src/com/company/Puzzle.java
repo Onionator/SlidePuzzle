@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Puzzle {
-    int[][] board = {{10, 3, 11, 4}, {1, 5, 15, 7}, {8, 6, 13, 2}, {12, 9, 14, 0} };
+    int[][] board = {{10, 3, 11, 4}, {1, 5, 14, 7}, {8, 6, 13, 2}, {12, 9, 15, 0} };
     int boardLength = board.length;
 
     protected Puzzle() {
@@ -212,13 +212,10 @@ public class Puzzle {
                             // move zero up
                             moveUp(0);
                         }
-                    } else if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - (boardLength - 1)) {
+                    } else {
                         // else if zero can move left
                         // move zero left
                         moveLeft(0);
-                    } else {
-                        // zero is above bottom number and ready to initiate bottom corner move sequence
-                        initiateBottomLeftMoveSequence = true;
                     }
                 } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
                     // else if zero needs to go up
@@ -286,12 +283,16 @@ public class Puzzle {
             zeroCoordinates = find(0);
             numCoordinates = find(num);
             System.out.println(Arrays.equals(numCoordinates, numEndCoordinates));
+            System.out.println(numIsFarthestRight);
             System.out.println(Arrays.toString(numCoordinates));
             System.out.println(Arrays.toString(numEndCoordinates));
-            System.out.println(numIsFarthestDown);
+            System.out.println(numEndCoordinates[1] == -1);
+            System.out.println(Arrays.toString(find(8)));
+            System.out.println(Arrays.toString(find(num)));
+            System.out.println(num);
             if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestRight) {
                 // if the number is below where it needs to be and it is the last number in a row start the move sequence
-                if (Arrays.equals(zeroCoordinates, new int[] {numCoordinates[0] + 1, numCoordinates[1]})) {
+                if (Arrays.equals(zeroCoordinates, new int[]{numCoordinates[0] + 1, numCoordinates[1]})) {
                     // if the zero is beneath the number move it left 1 and up 1 first.
                     moveLeft(0);
                     moveUp(0);
@@ -315,8 +316,15 @@ public class Puzzle {
                 moveDown(0);
                 System.out.println(printBoard());
                 break;
-            } else if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestDown && initiateBottomLeftMoveSequence) {
-                // number belongs on the bottom left corner and is currently one space to the right of it and the zero is above it.
+            } else if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestDown) {
+                // number belongs on the bottom left corner and is currently one space to the right
+                if (Arrays.equals(zeroCoordinates, new int[] {numCoordinates[0], numCoordinates[1] + 1})) {
+                    // if the 0 is to the right of the number then move it above
+                    moveUp(0);
+                    System.out.println(printBoard());
+                    moveLeft(0);
+                    System.out.println(printBoard());
+                }
                 moveUp(0);
                 System.out.println(printBoard());
                 moveLeft(0);
@@ -339,6 +347,10 @@ public class Puzzle {
             }
             numCoordinates = find(num);
         }
+        if (numCoordinates[0] > zeroCoordinates[0]) {
+            moveDown(0);
+            System.out.println(printBoard());
+        }
     }
 }
 
@@ -355,3 +367,6 @@ public class Puzzle {
 
 // solve the top row of unsolved numbers
 // solve the 2x3 puzzle of remaining tiles
+
+
+// if it should move left equation (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - (boardLength - 1))
