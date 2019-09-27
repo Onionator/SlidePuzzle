@@ -107,4 +107,4 @@
 
 * solve 2x3
     * solve for 10 then 11 then 10 followed by formula for 4
-    * then 14 and 15 should already be where they are supposed to be. if not then it is unsolvable.
+    * then 14 and 15 both need to move left one square. if 15 is left to 14 it is unsolvable.

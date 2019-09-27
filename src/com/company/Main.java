@@ -271,3 +271,41 @@ public class Main {
                     // move zero down
                 // else if zero needs to go left
                     // move zero left
+
+
+// place 1-3
+
+// to get the 4 in place move the 4 just under where it needs to be.
+    // move 2 down
+    // move 3 left
+    // move random in 4 spot left
+    // move 4 up
+    // 4 is now in place.
+// to fix previous numbers.
+    // move random left of empty to the right
+    // move random above empty down
+    // move 3 right
+    // move 2 up
+    // 1, 2, 3, and 4 are now in place
+
+// place 5 and 9
+
+// to move 13 into place
+    // move 13 to the right of its spot
+    // move 5 right
+    // move 9 up
+    // move random in 13 spot up
+    // move 13 left
+    // 13 is now in its place
+// to fix 5 and 9
+    // move random above empty down
+    // move random left of empty right
+    // move 9 down
+    // move 5 left
+
+// place 6 and 7
+    // follow formula for 4
+
+// solve 2x3
+    // solve for 10 then 11 then 10 followed by formula for 4
+    // then 14 and 15 should already be where they are supposed to be. if not then it is unsolvable.
