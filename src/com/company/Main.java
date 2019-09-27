@@ -4,25 +4,27 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        int[][] finishedPuzzle = {{10, 3, 11, 4}, {1, 5, 15, 7}, {8, 13, 6, 2}, {12, 9, 14, 0} };
         Puzzle puzzle = new Puzzle();
         System.out.println(puzzle.printBoard());
 //        for (int i = 1; i < 9; i++) {
-        puzzle.positionNumber(1);
-        puzzle.positionNumber(2);
-        puzzle.positionNumber(3);
-        puzzle.positionNumber(4);
-        puzzle.positionNumber(5);
-        puzzle.positionNumber(9);
-        puzzle.positionNumber(13);
-        puzzle.positionNumber(6);
-        puzzle.positionNumber(7);
-        puzzle.positionNumber(8);
-        puzzle.positionNumber(10);
-        puzzle.positionNumber(11);
-        puzzle.positionNumber(12);
-        puzzle.positionNumber(14);
-        puzzle.positionNumber(15);
-//        }
+        while(!(Arrays.equals(puzzle.getBoard(), finishedPuzzle))) {
+            puzzle.positionNumber(1);
+            puzzle.positionNumber(2);
+            puzzle.positionNumber(3);
+            puzzle.positionNumber(4);
+            puzzle.positionNumber(5);
+            puzzle.positionNumber(9);
+            puzzle.positionNumber(13);
+            puzzle.positionNumber(6);
+            puzzle.positionNumber(7);
+            puzzle.positionNumber(8);
+            puzzle.positionNumber(10);
+            puzzle.positionNumber(11);
+            puzzle.positionNumber(12);
+            puzzle.positionNumber(14);
+            puzzle.positionNumber(15);
+        }
 
     }
 
