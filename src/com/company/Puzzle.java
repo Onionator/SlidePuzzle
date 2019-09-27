@@ -3,7 +3,7 @@ package com.company;
 import java.util.Arrays;
 
 public class Puzzle {
-    int[][] board = {{10, 3, 6, 4}, {1, 5, 2, 7}, {8, 13, 0 ,15}, {14, 9, 12, 11} };
+    int[][] board = {{10, 3, 11, 4}, {1, 5, 2, 7}, {8, 13, 6, 15}, {12, 9, 14, 0} };
     int boardLength = board.length;
 
     protected Puzzle() {
@@ -318,16 +318,20 @@ public class Puzzle {
         int[] numCoordinates = find(num);
         int[] zeroCoordinates = find(0);
         int[] numEndCoordinates = {(num - 1) / boardLength, (num % boardLength) - 1};
+        if (numEndCoordinates[1] == -1) {
+            numEndCoordinates[1] = 3;
+        }
+        System.out.println(Arrays.toString(numEndCoordinates));
         while (!(Arrays.equals(numCoordinates, numEndCoordinates))) {
             // while number is not in its place
             if (numCoordinates[0] - numEndCoordinates[0] > 0) {
                 // if number needs to move up
                 // does zero need to move up, down, or not at all to be above the number
-                if (zeroCoordinates[0] - numCoordinates[0] > 0) {
+                if (zeroCoordinates[0] - numCoordinates[0] >= 0) {
                     // if zero needs to go up
                     if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] == num) {
                         // if zero is immediately below the number determine if it should go left or right before going up
-                        if (zeroCoordinates[1] < boardLength) {
+                        if (zeroCoordinates[1] < boardLength - 1) {
                             // if zero needs to go right
                             // move zero right
                             moveRight(0);
@@ -354,14 +358,21 @@ public class Puzzle {
                     // move zero right
                     moveRight(0);
                 }
+                System.out.println(printBoard());
+                zeroCoordinates = find(0);
+                if (numCoordinates[0] - 1 == zeroCoordinates[0] && numCoordinates[1] == zeroCoordinates[1]) {
+                    // if zero is directly above num move num up
+                    moveUp(num);
+                    System.out.println(printBoard());
+                }
             } else if (numCoordinates[0] - numEndCoordinates[0] < 0) {
                 // else if number needs to go down
                 // does zero need to move up, down, or not at all to be above the number
-                if (zeroCoordinates[0] - numCoordinates[0] < 0) {
+                if (zeroCoordinates[0] - numCoordinates[0] <= 0) {
                 // if zero needs to go down
                     if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] == num) {
                         // if zero is immediately above the number determine if it should go left or right before going down
-                        if (zeroCoordinates[1] < boardLength) {
+                        if (zeroCoordinates[1] < boardLength - 1) {
                             // if zero needs to go right
                             // move zero right
                             moveRight(0);
@@ -375,10 +386,6 @@ public class Puzzle {
                         // move zero down
                         moveDown(0);
                     }
-                } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
-                    // else if zero needs to go up
-                    // move zero up
-                    moveUp(0);
                 } else if (zeroCoordinates[1] - numCoordinates[1] > 0) {
                     // else if zero needs to go left
                     // move zero left
@@ -387,15 +394,26 @@ public class Puzzle {
                     // else if zero needs to go right
                     // move zero right
                     moveRight(0);
+                } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
+                    // else if zero needs to go up
+                    // move zero up
+                    moveUp(0);
+                }
+                System.out.println(printBoard());
+                zeroCoordinates = find(0);
+                if (numCoordinates[0] + 1 == zeroCoordinates[0] && numCoordinates[1] == zeroCoordinates[1]) {
+                    // if zero is directly below num move num down
+                    moveDown(num);
+                    System.out.println(printBoard());
                 }
             } else if (numCoordinates[1] - numEndCoordinates[1] > 0) {
                 // if number needs to go left
                 // does zero need to left up, right, or not at all to be above the number
-                if (zeroCoordinates[1] - numCoordinates[1] > 0) {
+                if (zeroCoordinates[1] - numCoordinates[1] >= 0) {
                     // if zero needs to go left
                     if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] == num) {
                         // if zero is right of the number determine if it should go up or down before going left
-                        if (zeroCoordinates[0] < boardLength) {
+                        if (zeroCoordinates[0] < boardLength - 1) {
                             // if zero needs to go down
                             // move zero down
                             moveDown(0);
@@ -413,7 +431,7 @@ public class Puzzle {
                     // else if zero needs to go up
                     // move zero up
                     moveUp(0);
-                } else if (zeroCoordinates[0] - numCoordinates[0] < -1) {
+                } else if (zeroCoordinates[0] - numCoordinates[0] < 0) {
                     // else if zero needs to go down
                     // move zero down
                     moveDown(0);
@@ -422,14 +440,21 @@ public class Puzzle {
                     // move zero right
                     moveRight(0);
                 }
+                System.out.println(printBoard());
+                zeroCoordinates = find(0);
+                if (numCoordinates[0] == zeroCoordinates[0] && numCoordinates[1] - 1 == zeroCoordinates[1]) {
+                    // if zero is directly left of num move num left
+                    moveLeft(num);
+                    System.out.println(printBoard());
+                }
             } else if ((numCoordinates[1] - numEndCoordinates[1] < 0)) {
                 // if number needs to go right
                 // does zero need to the right of the number
-                if (zeroCoordinates[1] - numCoordinates[1] < 0) {
+                if (zeroCoordinates[1] - numCoordinates[1] <= 0) {
                     // if zero needs to go right
                     if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] == num) {
                         // if zero is immediately to the left of the number determine if it should go up or down before going right
-                        if (zeroCoordinates[0] < boardLength) {
+                        if (zeroCoordinates[0] < boardLength - 1) {
                             // if zero needs to go down
                             // move zero down
                             moveDown(0);
@@ -439,23 +464,30 @@ public class Puzzle {
                             moveUp(0);
                         }
                     } else {
-                    // else if zero can move right
-                    // move zero right
-                    moveRight(0);
+                        // else if zero can move right
+                        // move zero right
+                        moveRight(0);
+                    }
+                } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
+                    // else if zero needs to go up
+                    // move zero up
+                    moveUp(0);
+                } else if (zeroCoordinates[0] - numCoordinates[0] < 0) {
+                    // else if zero needs to go down
+                    // move zero down
+                    moveDown(0);
+                } else if (zeroCoordinates[1] - numCoordinates[1] > 0) {
+                    // else if zero needs to go left
+                    // move zero left
+                    moveLeft(0);
                 }
-        } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
-            // else if zero needs to go up
-            // move zero up
-            moveUp(0);
-        } else if (zeroCoordinates[0] - numCoordinates[0] < -1) {
-            // else if zero needs to go down
-            // move zero down
-            moveDown(0);
-        } else if (zeroCoordinates[1] - numCoordinates[1] > 0) {
-            // else if zero needs to go left
-            // move zero left
-            moveLeft(0);
-        }
+                System.out.println(printBoard());
+                zeroCoordinates = find(0);
+                if (numCoordinates[0] == zeroCoordinates[0] && numCoordinates[1] + 1 == zeroCoordinates[1]) {
+                    // if zero is directly right of num move run right
+                    moveRight(num);
+                    System.out.println(printBoard());
+                }
             }
             numCoordinates = find(num);
         }

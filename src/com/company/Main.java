@@ -6,7 +6,23 @@ public class Main {
     public static void main(String[] args) {
         Puzzle puzzle = new Puzzle();
         System.out.println(puzzle.printBoard());
-        puzzle.loopThroughMoves(8);
+//        for (int i = 1; i < 9; i++) {
+        puzzle.positionNumber(1);
+        puzzle.positionNumber(2);
+        puzzle.positionNumber(3);
+        puzzle.positionNumber(4);
+        puzzle.positionNumber(5);
+        puzzle.positionNumber(9);
+        puzzle.positionNumber(13);
+        puzzle.positionNumber(6);
+        puzzle.positionNumber(7);
+        puzzle.positionNumber(8);
+        puzzle.positionNumber(10);
+        puzzle.positionNumber(11);
+        puzzle.positionNumber(12);
+        puzzle.positionNumber(14);
+        puzzle.positionNumber(15);
+//        }
 
     }
 
