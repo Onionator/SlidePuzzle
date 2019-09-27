@@ -4,16 +4,16 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] finishedPuzzle = {{10, 3, 11, 4}, {1, 5, 15, 7}, {8, 13, 6, 2}, {12, 9, 14, 0} };
+        int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0} };
         Puzzle puzzle = new Puzzle();
         System.out.println(puzzle.printBoard());
 //        for (int i = 1; i < 9; i++) {
-        while(!(Arrays.equals(puzzle.getBoard(), finishedPuzzle))) {
+//        while(!(Arrays.equals(puzzle.getBoard(), finishedPuzzle))) {
             puzzle.positionNumber(1);
             puzzle.positionNumber(2);
             puzzle.positionNumber(3);
-//            puzzle.positionNumber(4);
-//            puzzle.positionNumber(5);
+            puzzle.positionNumber(4);
+            puzzle.positionNumber(5);
 //            puzzle.positionNumber(9);
 //            puzzle.positionNumber(13);
 //            puzzle.positionNumber(6);
@@ -24,7 +24,7 @@ public class Main {
 //            puzzle.positionNumber(12);
 //            puzzle.positionNumber(14);
 //            puzzle.positionNumber(15);
-        }
+//        }
 
     }
 
