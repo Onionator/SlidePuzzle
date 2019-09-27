@@ -183,8 +183,7 @@ public class Main {
 
 }
 
-public void positionNumber(int num) {
-    while ()
+
 // while number is not in its place
     // if number needs to move up
         // does zero need to move up, down, or not at all to be above the number
@@ -254,4 +253,3 @@ public void positionNumber(int num) {
                     // move zero down
                 // else if zero needs to go left
                     // move zero left
-}

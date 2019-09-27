@@ -296,7 +296,7 @@ public class Puzzle {
     }
 
 
-}
+
 
 
 //else if (zeroMovesY > -1 && zeroMovesY <= 0) {
@@ -357,39 +357,62 @@ public class Puzzle {
             } else if (numCoordinates[0] - numEndCoordinates[0] < 0) {
                 // else if number needs to go down
                 // does zero need to move up, down, or not at all to be above the number
-                if (zeroCoordinates[0] - numCoordinates[0] > 0) {
+                if (zeroCoordinates[0] - numCoordinates[0] < 0) {
                 // if zero needs to go down
-                // if zero is immediately above the number determine if it should go left or right before going down
-                // if zero needs to go left
-                // move zero left
-                // else zero needs to go right
-                // move zero right
-                // else if zero can move down
+                    if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] == num) {
+                        if (zeroCoordinates[1] < boardLength) {
+                            // if zero needs to go right
+                            // move zero right
+                            moveRight(0);
+                        } else {
+                            // else zero needs to go left
+                            // move zero left
+                            moveLeft(0);
+                        }
+                    } else {
+                        // else if zero can move down
+                        // move zero down
+                        moveDown(0);
+                    }
+                } else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
+                    // else if zero needs to go up
+                    // move zero up
+                    moveUp(0);
+                } else if (zeroCoordinates[1] - numCoordinates[1] > 0) {
+                    // else if zero needs to go left
+                    // move zero left
+                    moveLeft(0);
+                } else if (zeroCoordinates[1] - numCoordinates[1] < 0) {
+                    // else if zero needs to go right
+                    // move zero right
+                    moveRight(0);
+                }
+            } else if (numCoordinates[1] - numEndCoordinates[1] > 0) {
+                // if number needs to go left
+                // does zero need to left up, right, or not at all to be above the number
+                if (zeroCoordinates[1] - numCoordinates[1] > 0) {
+                    // if zero needs to go left
+                    // if zero is immediately above the number determine if it should go up or down before going left
+                    // if zero needs to go down
+                    // move zero down
+                    // else zero needs to go up
+                    // move zero up
+                    // else if zero can move left
+                    // move zero left
+                }   else if (zeroCoordinates[0] - numCoordinates[0] > 0) {
+                    // else if zero needs to go up
+                    // move zero up
+                    moveUp(0);
+                } else if (zeroCoordinates[0] - numCoordinates[0] < -1) {
+                // else if zero needs to go down
                 // move zero down
-                // else if zero needs to go up
-                // move zero up
-                // else if zero needs to go left
-                // move zero left
+                moveDown(0);
+            } else if (zeroCoordinates[1] - numCoordinates[1] < 0) {
                 // else if zero needs to go right
                 // move zero right
+                moveRight(0);
             }
-            // if number needs to go left
-            // does zero need to left up, right, or not at all to be above the number
-            // if zero needs to go left
-            // if zero is immediately above the number determine if it should go up or down before going left
-            // if zero needs to go down
-            // move zero down
-            // else zero needs to go up
-            // move zero up
-            // else if zero can move left
-            // move zero left
-            // else if zero needs to go up
-            // move zero up
-            // else if zero needs to go down
-            // move zero down
-            // else if zero needs to go right
-            // move zero right
-
+            }
 
             // if number needs to go right
             // does zero need to left up, right, or not at all to be above the number
@@ -410,3 +433,4 @@ public class Puzzle {
             numCoordinates = find(num);
         }
     }
+}
