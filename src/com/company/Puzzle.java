@@ -83,13 +83,17 @@ public class Puzzle {
         }
     }
 
-    public void positionNumber(int num) {
+    public boolean positionNumber(int num) {
         int[] numCoordinates = find(num);
         int[] zeroCoordinates = find(0);
         int[] numEndCoordinates = {(num - 1) / boardLength, (num % boardLength) - 1};
         boolean numIsFarthestRight = false;
         boolean numIsFarthestDown = false;
-        boolean initiateBottomLeftMoveSequence = false;
+        if ((boardLength * boardLength) - 2 == num && Arrays.equals(find((boardLength * boardLength) - 1), numEndCoordinates)) {
+            // if it is the second to last number and the last number is in the place of the where the second to last should be then it is unsolvable
+            // 13, 15, 14 == unsolvable
+            return false;
+        }
         if (numEndCoordinates[1] == -1) {
             // if the number belongs at the far right of the puzzle then change its end coordinates to be at the far right and one below where it should be
             numEndCoordinates[1] = boardLength - 1;
@@ -346,6 +350,7 @@ public class Puzzle {
             moveDown(0);
             System.out.println(printBoard());
         }
+        return true;
     }
 }
 
