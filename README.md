@@ -1,5 +1,9 @@
 # Slide Puzzle Solver
 
+Slide Puzzle Solver is a program that solves a slide puzzle if it is possible to be solved.
+
+#### By Sam Cook 9-27-2019
+
 ## Logic for moving a number into its place
 * while number is not in its place
     * if number needs to move up
@@ -108,3 +112,11 @@
 * solve 2x3
     * solve for 10 then 11 then 10 followed by formula for 4
     * then 14 and 15 both need to move left one square. if 15 is left to 14 it is unsolvable.
+
+## Technologies
+  * Java
+
+## License
+  MIT
+
+_(c) Sam Cook 2019_
