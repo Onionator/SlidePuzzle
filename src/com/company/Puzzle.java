@@ -92,10 +92,12 @@ public class Puzzle {
         boolean initiateBottomLeftMoveSequence = false;
         if (numEndCoordinates[1] == -1) {
             // if the number belongs at the far right of the puzzle then change its end coordinates to be at the far right and one below where it should be
-            numEndCoordinates[0] = numEndCoordinates[0] + 1;
             numEndCoordinates[1] = boardLength - 1;
-            numIsFarthestRight = true;
-        } else if (numEndCoordinates[0] == boardLength - 1 && numEndCoordinates[1] <= boardLength - 3) {
+            if (!(Arrays.equals(numCoordinates, numEndCoordinates))) {
+                numIsFarthestRight = true;
+                numEndCoordinates[0] = numEndCoordinates[0] + 1;
+            }
+        } else if (numEndCoordinates[0] == boardLength - 1 && numEndCoordinates[1] < boardLength - 3) {
             // if the number belongs at the bottom of the puzzle and is not within the bottom right 3x3 squares change its coordinates to the one right of where it is supposed to go
             numEndCoordinates[1] += 1;
             numIsFarthestDown = true;
@@ -282,14 +284,6 @@ public class Puzzle {
             }
             zeroCoordinates = find(0);
             numCoordinates = find(num);
-            System.out.println(Arrays.equals(numCoordinates, numEndCoordinates));
-            System.out.println(numIsFarthestRight);
-            System.out.println(Arrays.toString(numCoordinates));
-            System.out.println(Arrays.toString(numEndCoordinates));
-            System.out.println(numEndCoordinates[1] == -1);
-            System.out.println(Arrays.toString(find(8)));
-            System.out.println(Arrays.toString(find(num)));
-            System.out.println(num);
             if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestRight) {
                 // if the number is below where it needs to be and it is the last number in a row start the move sequence
                 if (Arrays.equals(zeroCoordinates, new int[]{numCoordinates[0] + 1, numCoordinates[1]})) {
@@ -317,6 +311,7 @@ public class Puzzle {
                 System.out.println(printBoard());
                 break;
             } else if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestDown) {
+                System.out.println("num is: " + num);
                 // number belongs on the bottom left corner and is currently one space to the right
                 if (Arrays.equals(zeroCoordinates, new int[] {numCoordinates[0], numCoordinates[1] + 1})) {
                     // if the 0 is to the right of the number then move it above

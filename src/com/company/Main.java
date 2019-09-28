@@ -21,9 +21,9 @@ public class Main {
             puzzle.positionNumber(8);
             puzzle.positionNumber(10);
             puzzle.positionNumber(11);
-//            puzzle.positionNumber(12);
-//            puzzle.positionNumber(14);
-//            puzzle.positionNumber(15);
+            puzzle.positionNumber(12);
+            puzzle.positionNumber(14);
+            puzzle.positionNumber(15);
 //        }
 
     }
