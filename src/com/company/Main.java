@@ -4,31 +4,34 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0} };
-        Puzzle puzzle = new Puzzle();
+        SlidePuzzle puzzle = new SlidePuzzle();
         System.out.println(puzzle.printBoard());
+
+        puzzle.positionZero(1);
+
 //        for (int i = 1; i < 9; i++) {
-//        while(!(Arrays.equals(puzzle.getBoard(), finishedPuzzle))) {
-        puzzle.positionNumber(1);
-        puzzle.positionNumber(2);
-        puzzle.positionNumber(3);
-        puzzle.positionNumber(4);
-        puzzle.positionNumber(5);
-        puzzle.positionNumber(9);
-        puzzle.positionNumber(13);
-        puzzle.positionNumber(6);
-        puzzle.positionNumber(7);
-        puzzle.positionNumber(8);
-        puzzle.positionNumber(10);
-        puzzle.positionNumber(11);
-        puzzle.positionNumber(12);
-        if (puzzle.positionNumber(14)){
-            puzzle.positionNumber(15);
-            System.out.println("The puzzle has been solved.");
-        } else {
-            System.out.println("The puzzle is not solvable.");
-        }
+//        while(!(Arrays.equals(puzzle.getBoard(), puzzle.getFinishedPuzzle())) && puzzle.getMoveCount() < 160) {
+//            puzzle.positionNumber(1);
+//            puzzle.positionNumber(2);
+//            puzzle.positionNumber(3);
+//            puzzle.positionNumber(4);
+//            puzzle.positionNumber(5);
+//            puzzle.positionNumber(9);
+//            puzzle.positionNumber(13);
+//            puzzle.positionNumber(6);
+//            puzzle.positionNumber(7);
+//            puzzle.positionNumber(8);
+//            puzzle.positionNumber(10);
+//            puzzle.positionNumber(11);
+//            puzzle.positionNumber(12);
+//            puzzle.positionNumber(14);
+//            puzzle.positionNumber(15);
+//            System.out.println("The puzzle has been solved.");
+//            System.out.println("It took " + puzzle.getMoveCount() + " moves to solve the puzzle.");
+
 //        }
+
+
 
     }
 
@@ -313,3 +316,15 @@ public class Main {
 // solve 2x3
     // solve for 10 then 11 then 10 followed by formula for 4
     // then 14 and 15 should already be where they are supposed to be. if not then it is unsolvable.
+
+// solve in less moves by lining up the 4 to help the 3 in
+// 124-
+// --30
+// ---
+// ---
+
+// or
+
+// 12-3
+// --04
+

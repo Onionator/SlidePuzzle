@@ -113,6 +113,32 @@ Slide Puzzle Solver is a program that solves a slide puzzle if it is possible to
     * solve for 10 then 11 then 10 followed by formula for 4
     * then 14 and 15 both need to move left one square. if 15 is left to 14 it is unsolvable.
 
+
+## New Strategy
+
+// The puzzle should always be solvable.
+        // If the board length is even and the zero is in in an even row (to determine even row start counting at 1 from the bottom) and the number of inversions is odd then it is solvable.
+        // If the board length is even and the zero is in in an odd row (to determine odd row start counting at 1 from the bottom) and the number of inversions is even then it is solvable.
+        // If the board length is odd and the number of inversions is even then it is solvable.
+
+        // Rules of movement
+        // 1. The number can only move up if it the zero is above it.
+        // 2. The number can only move left if the zero is left of it.
+        // 3. The number can only move down if it the zero is below it.
+        // 4. The number can only move right if the zero is right of it.
+        // 5. The zero can only move up if it doesn't affect a number that is already in its place above it.
+        // 6. The zero can only move left if it doesn't affect a number this is already in its place left of it.
+        // 7. There are some exceptions to rules 3 and 4 such as the furthest right number in a row or the furthest down number in a column require zero to move numbers that have already been placed.
+        // 8. The top row should be solved first. It is solved going left to right while not affecting numbers already in place unless otherwise specified by rule 5.
+        // 9. The left column should be solved next. It is solved going top to bottom while not affecting numbers already in place unless otherwise specified by rule 5.
+        // 10. Repeat 8 followed by 9 until there is a 3X3 unsolved square in the bottom right corner.
+        // 11. Do step 8 twice. Then finish the puzzle.
+
+        // Loop through the moves for each number until it is in its place.
+        // First determine if moving the zero the least amount of times to be able to move the number is possible while following the rules.
+        // If it is possible then proceed with zero movement followed by number movement when available.
+        // If it is not possible then determine the next shortest distance
+
 ## Technologies
   * Java
 

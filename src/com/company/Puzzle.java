@@ -164,7 +164,7 @@ public class Puzzle {
                 // else if number needs to go down
                 // does zero need to move up, down, or not at all to be above the number
                 if (zeroCoordinates[0] - numCoordinates[0] <= 0) {
-                // if zero needs to go down
+                    // if zero needs to go down
                     if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] == num) {
                         // if zero is immediately above the number determine if it should go left or right before going down
                         if (zeroCoordinates[1] < boardLength - 1) {
@@ -353,20 +353,3 @@ public class Puzzle {
         return true;
     }
 }
-
-// while unsolved area == > 3x3
-    // solve the top row of numbers
-        // solve top left corner
-        // while != boardLength - 2
-            // solve next from the left without moving the one to the left
-        // solve the top right piece
-    // solve the left column of numbers without moving the top row
-        // while != boardLength - 2
-            // solve next from the top without moving the one above it
-        // solve the bottom left piece
-
-// solve the top row of unsolved numbers
-// solve the 2x3 puzzle of remaining tiles
-
-
-// if it should move left equation (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - (boardLength - 1))
