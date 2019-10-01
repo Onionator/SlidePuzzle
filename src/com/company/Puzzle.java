@@ -5,7 +5,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Puzzle {
-    int[][] board = {{10, 3, 11, 4}, {1, 5, 14, 7}, {8, 6, 13, 2}, {12, 9, 15, 0}};
+    int[][] board = {{11, 6,  15, 3},
+            {7,  12, 4,  14},
+            {5,  9,  2,  0},
+            {10, 8,  13, 1}}  ;
     int boardLength = board.length;
 
     protected Puzzle() {
@@ -372,7 +375,6 @@ public class Puzzle {
                 moveDown(0);
                 break;
             } else if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestDown) {
-                System.out.println("num is: " + num);
                 // number belongs on the bottom left corner and is currently one space to the right
                 if (Arrays.equals(zeroCoordinates, new int[] {numCoordinates[0], numCoordinates[1] + 1})) {
                     // if the 0 is to the right of the number then move it above
