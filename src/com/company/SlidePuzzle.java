@@ -8,10 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SlidePuzzle {
-    int[][] board = {{1,  2,  3,  4},
-            {5,  0,  14, 10},
-            {8,  9,  13, 7},
-            {6,  15, 11, 12 }};
+    int[][] board = newBoard();
     int boardLength = board.length;
     int moveCount = 0;
     int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
@@ -49,10 +46,13 @@ public class SlidePuzzle {
         }
 
         // Can the puzzle be solved?
-        int zeroY = listOfInts.indexOf(0) / num;
+        int zeroY = ((listOfInts.indexOf(0) / num) - boardLength);
+        listOfInts.remove(listOfInts.indexOf(0));
+        System.out.println(listOfInts);
+
         int inversions = 0;
-        for (int i = 0; i < listOfInts.size() - 1; i++) {
-            for (int n = i + 1; n < listOfInts.size(); n++) {
+        for (int i = 0; i < (listOfInts.size() - 1); i++) {
+            for (int n = (i + 1); n < listOfInts.size(); n++) {
                 if (listOfInts.get(i) > listOfInts.get(n)) {
                     inversions++;
                 }
@@ -61,12 +61,17 @@ public class SlidePuzzle {
 
         if (zeroY % 2 == 0 && inversions % 2 == 1) {
             System.out.println("Can be solved");
+            System.out.println("Inversions: " + inversions);
+            System.out.println("zeroY: " + zeroY);
         } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
             System.out.println("Can be solved");
+            System.out.println("Inversions: " + inversions);
+            System.out.println("zeroY: " + zeroY);
         } else {
             System.out.println("Can't be solved.");
             newBoard();
         }
+
 
         return arrayOfArrays;
     }
@@ -74,12 +79,15 @@ public class SlidePuzzle {
     public void isSolvable(List<Integer> listOfInts) {
         // Can the puzzle be solved?
         int zeroY = listOfInts.indexOf(0) / boardLength;
-        int inversions = 0;
+        int inversions = -1;
         // Can the puzzle be solved?
-        for (int i = 0; i < listOfInts.size() - 1; i++) {
+        for (int i = 0; i < (listOfInts.size() - 1); i++) {
             for (int n = i + 1; n < listOfInts.size(); n++) {
+                System.out.println("i: " + listOfInts.get(i));
+                System.out.println("n: " + listOfInts.get(n));
                 if (listOfInts.get(i) > listOfInts.get(n)) {
                     inversions++;
+                    System.out.println(inversions);
                 }
             }
         }
@@ -179,7 +187,7 @@ public class SlidePuzzle {
     public void solveFor(int num) {
         // Determine the best path for zero to take to move the number into its spot.
             int count = 0;
-        while (count < 16) {
+        while (count < 30) {
             count++;
             System.out.println("count: " + count);
             int[] numCoordinates = find(num);
@@ -345,9 +353,10 @@ public class SlidePuzzle {
             } else if (xMoves < 0) {
                 System.out.println("Num needs to go left");
                 int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] - 1};
+                System.out.println(Arrays.equals(zeroCoordinates, zeroEndCoordinates));
                 // if num needs to go left
                 if (Arrays.equals(zeroCoordinates, zeroEndCoordinates)) {
-                    // num is ready to move up
+                    // num is ready to move left
                     moveLeft(num);
                 } else if (zeroEndCoordinates[1] - zeroCoordinates[1] < 0) {
                     // if zero needs to go left
@@ -355,9 +364,8 @@ public class SlidePuzzle {
                         // Zero can move left
                         moveLeft(0);
                     } else if (zeroCoordinates[0] < boardLength - 1) {
-                        System.out.println("Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         // if zero is not at the bottom
-                        if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num && board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num && leftColumnNumber) {
+                        if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num && board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num && leftColumnNumber) {
                             // Zero can move down
                             moveDown(0);
                             moveLeft(0);
