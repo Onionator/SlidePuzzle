@@ -8,11 +8,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SlidePuzzle {
-    int[][] board = {{0,  1,  13, 9},
-            {2,  11, 14, 15},
-                    {3,  6,  12, 7},
-                            {10, 8,  5,  4}}
-    ;
+    int[][] board = {{1,  2,  3,  4},
+            {5,  0,  14, 10},
+            {8,  9,  13, 7},
+            {6,  15, 11, 12 }};
     int boardLength = board.length;
     int moveCount = 0;
     int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
@@ -190,10 +189,6 @@ public class SlidePuzzle {
             boolean numIsFarthestRight = false;
             boolean lastLeftColumnNumber = false;
 
-            System.out.println("num is: " + num);
-            System.out.println("numCoordinates: " + Arrays.toString(numCoordinates));
-            System.out.println("numEndCoordinates: " + Arrays.toString(numEndCoordinates));
-
             if (numEndCoordinates[1] == -1) {
                 // if the number belongs at the far right of the puzzle then change its end coordinates to be at the far right and one below where it should be
                 numEndCoordinates[1] = boardLength - 1;
@@ -204,12 +199,14 @@ public class SlidePuzzle {
             } else if (numEndCoordinates[1] + 3 < boardLength) {
                 // number belongs in the farthest left unsolved column
                 leftColumnNumber = true;
-                if (numCoordinates[0] == boardLength - 1) {
+                System.out.println();
+                if (numEndCoordinates[0] == (boardLength - 1)) {
                     // if it is the last number adjust its end coordinates
-                    numEndCoordinates[1] += 1;
+                    numEndCoordinates[1] = numEndCoordinates[1] + 1;
                     lastLeftColumnNumber = true;
                 }
             }
+            System.out.println("lastLeftColumnNumber: " + lastLeftColumnNumber + " " + numCoordinates[0] + " " + (boardLength - 1));
             System.out.println("num is: " + num);
             System.out.println("numCoordinates: " + Arrays.toString(numCoordinates));
             System.out.println("numEndCoordinates: " + Arrays.toString(numEndCoordinates));
@@ -283,9 +280,15 @@ public class SlidePuzzle {
                     if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && board[zeroCoordinates[0] - 1][zeroCoordinates[1]] != num && leftColumnNumber) {
                         // Zero can move up
                         moveUp(0);
+                        if (xMoves > 0) {
+                            // num needs to move right
+                        }
                     } else if (zeroCoordinates[1] < boardLength - 1) {
                         // Zero will stay within the boundaries
-                        if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
+                        if (xMoves > 0 && board[numCoordinates[0]][numCoordinates[1] + 1] == 0) {
+                            // num can move right and needs to move right then move it right
+                            moveRight(num);
+                        } else if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
                             // Zero can move right
                             moveRight(0);
                         } else {
@@ -294,8 +297,12 @@ public class SlidePuzzle {
                             moveRight(0);
                             moveRight(0);
                             moveUp(0);
-                            moveUp(0);
-                            moveLeft(0);
+                            if (board[numCoordinates[0] -1][numCoordinates[1]] > num) {
+                                moveUp(0);
+                                moveLeft(0);
+                            } else {
+                                moveRight(num);
+                            }
                         }
                     } else if (zeroCoordinates[1] == boardLength - 1) {
                         moveLeft(0);
@@ -330,13 +337,13 @@ public class SlidePuzzle {
                 } else if (zeroEndCoordinates[1] - zeroCoordinates[1] > 0) {
                     // zero needs to go right
                     moveRight(0);
-                    System.out.println("this is where i am working");
                 } else if (zeroEndCoordinates[0] - zeroCoordinates[0] > 0) {
                     // zero needs to go down
                     moveDown(0);
                 }
                 // LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT
             } else if (xMoves < 0) {
+                System.out.println("Num needs to go left");
                 int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] - 1};
                 // if num needs to go left
                 if (Arrays.equals(zeroCoordinates, zeroEndCoordinates)) {
@@ -348,8 +355,9 @@ public class SlidePuzzle {
                         // Zero can move left
                         moveLeft(0);
                     } else if (zeroCoordinates[0] < boardLength - 1) {
+                        System.out.println("Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         // if zero is not at the bottom
-                        if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
+                        if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num && board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num && leftColumnNumber) {
                             // Zero can move down
                             moveDown(0);
                             moveLeft(0);
@@ -380,6 +388,9 @@ public class SlidePuzzle {
                     }
                 } else if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
                     // zero needs to go up
+                    System.out.println("board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength: " + (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength));
+                    System.out.println(board[zeroCoordinates[0] - 1][zeroCoordinates[1]]);
+                    System.out.println(num - boardLength);
                     if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
                         // Zero can move up
                         moveUp(0);
@@ -446,6 +457,35 @@ public class SlidePuzzle {
                 } else if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
                     // if zero needs to move up
                     moveUp(0);
+                }
+            } else if (yMoves > 0) {
+                System.out.println("num needs to move down");
+                // if num needs to move down
+                int[] zeroEndCoordinates = {numCoordinates[0] + 1, numCoordinates[1]};
+                if (board[numCoordinates[0] + 1][numCoordinates[1]] == 0) {
+                    // if num can move down move it down
+                    moveDown(num);
+                } else if (zeroEndCoordinates[0] - zeroCoordinates[0] > 0) {
+                    // if zero needs to move down
+                    if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] != num) {
+                        // if zero can move down move it down
+                        moveDown(0);
+                    } else {
+                        // move zero right
+                        moveRight(0);
+                    }
+                } else if (zeroEndCoordinates[1] - zeroCoordinates[1] < 0) {
+                    // if zero needs to move left
+                    if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] != num) {
+                        // if zero can move left move it left
+                        moveLeft(0);
+                    } else {
+                        // move zero down
+                        moveDown(0);
+                    }
+                } else if (zeroEndCoordinates[1] - zeroCoordinates[1] > 0) {
+                    // if zero needs to move right
+                    moveRight(0);
                 }
             }
         }
