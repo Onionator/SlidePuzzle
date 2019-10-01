@@ -237,6 +237,145 @@ public class SlidePuzzle {
         List<String> listOfDownMoves = null;
         List<String> listOfRightMoves = null;
         int[][] tempBoard = board;
+        int routeOne = 0;
+        int routeTwo = 0;
+
+    // UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP UP
+        if (yMoves < 0) {
+            int[] zeroEndCoordinates = {numCoordinates[0] - 1, numCoordinates[1]};
+            // num needs to go up
+            if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
+                // if zero needs to go up
+                if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
+                    // Zero can move up
+                    moveUp(0);
+                } else if (zeroCoordinates[1] < boardLength - 1) {
+                    // Zero will stay within the boundaries
+                    if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
+                        // Zero can move right
+                        moveRight(0);
+                    }
+                } else if (zeroCoordinates[1] == boardLength - 1) {
+                    moveLeft(0);
+                    moveUp(0);
+                    if (xMoves < 0) {
+                        // if the number also needs to go left move it left
+                        moveLeft(num);
+                    } else {
+                        moveUp(0);
+                        moveRight(0);
+                    }
+                } else {
+                    // if num needs to go up and zero is left of it and zero can't go up...
+                    moveDown(0);
+                    moveRight(0);
+                    moveRight(0);
+                    moveUp(0);
+                    moveUp(0);
+                    moveLeft(0);
+                }
+            } else if (zeroEndCoordinates[1] - zeroCoordinates[1] < 0) {
+                // zero needs to go left
+                if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
+                    // if zero can follow the rules and go left
+                    moveLeft(0);
+                } else {
+                    // move zero down
+                    moveDown(0);
+                }
+            } else if (zeroEndCoordinates[1] - zeroCoordinates[1] > 0) {
+                // zero needs to go right
+                moveRight(0);
+            } else if (zeroEndCoordinates[0] - zeroCoordinates[0] > 0) {
+                // zero needs to go down
+                moveDown(0);
+            }
+    // LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT LEFT 
+        } else if (xMoves < 0) {
+            int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] - 1};
+            // if num needs to go left
+            if (zeroEndCoordinates[1] - zeroCoordinates[1] < 0) {
+                // if zero needs to go left
+                if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
+                    // Zero can move left
+                    moveLeft(0);
+                } else if (zeroCoordinates[0] < boardLength - 1) {
+                    // if zero is not at the bottom
+                    if (board[zeroCoordinates[0] + i][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + i][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
+                        // Zero can move down
+                        moveDown(0);
+                        moveLeft(0);
+                        if (yMoves > 0) {
+                            moveDown(num);
+                        }
+                    }
+                } else if (zeroCoordinates[0] == boardLength - 1){
+                    // Zero is at the bottom therefore it can move up
+                    moveUp(0);
+                    moveLeft(0);
+                } else {
+                    // if num needs to go left and zero is above it and zero can't go left...
+                    moveRight(0);
+                    moveDown(0);
+                    moveDown(0);
+                    moveLeft(0);
+                    moveLeft(0);
+                    moveUp(0);
+                }
+            }
+        } else if (yMoves > 0) {
+            int[] zeroEndCoordinates = {numCoordinates[0] + 1, numCoordinates[1]};
+            // if num needs to go down
+            if (zeroEndCoordinates[0] - zeroCoordinates[0] > 0) {
+                // if zero needs to go down
+
+            }
+        }
+
+        // if num needs to go left and zero is above it and zero can't go left...
+        moveRight(0);
+        moveDown(0);
+        moveDown(0);
+        moveLeft(0);
+        moveLeft(0);
+        moveUp(0);
+
+        // if num needs to go up and zero is left of it and zero can't go up...
+        moveDown(0);
+        moveRight(0);
+        moveRight(0);
+        moveUp(0);
+        moveUp(0);
+        moveLeft(0);
+
+        // if num is the last in a row and is directly below its spot...
+            // if zero is below num
+            moveLeft(0);
+            moveUp(0);
+        moveLeft(0);
+        moveUp(0);
+        moveRight(0);
+        moveRight(0);
+        moveDown(0);
+        moveLeft(0);
+        moveUp(0);
+        moveLeft(0);
+        moveDown(0);
+
+        // if num is the last (bottom) in a column and is directly right of where it needs to be
+            // if zero is right of the number
+            moveUp(0);
+            moveLeft(0);
+        moveUp(0);
+        moveLeft(0);
+        moveDown(0);
+        moveDown(0);
+        moveRight(0);
+        moveUp(0);
+        moveLeft(0);
+        moveUp(0);
+        moveRight(0);
+
 
         // Assuming the number is 1 and it needs to move up and left determine if it should move up or left first.
         if (yMoves < 0) {
@@ -247,35 +386,45 @@ public class SlidePuzzle {
             int zeroXMoves = zeroEndCoordinates[1] - numCoordinates[1];
             // Can zero make this move without affecting an already placed number?
             if (zeroYMoves < 0) {
-                // if or while?
                 // If zero needs to move up
-                if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-                    // Zero can move up
-                    upMoves++;
-                    moveUp(0);
-                } else if (zeroCoordinates[1] > 0) {
-                    // Zero will stay within the boundaries
-                    if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
-                        // Zero can move left
+                int zeroYMovesPositive = zeroYMoves * -1;
+                int zeroXMovesPositive = zeroXMoves < 0 ? zeroXMoves * -1 : zeroXMoves;
+
+
+                // see if zero can move up as fas as it needs to. then add move sure it would end up in its spot. then add the moves together and see if one route is short than another to determine which direction it should go first.
+                for (int i = 1; i <= zeroYMovesPositive; i++) {
+                    if (board[zeroCoordinates[0] - i][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - i][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
+                        // Zero can move up
                         upMoves++;
-                        moveLeft(0);
-                    }
-                } else if ((zeroCoordinates[1] < boardLength - 1)) {
-                    // Zero will stay within the boundaries
-                    if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
-                        // Zero can move right
-                        upMoves++;
-                        moveRight(0);
-                    }
-                } else if (zeroCoordinates[1] < boardLength - 1) {
-                    // Zero will stay within the boundaries
-                    if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-                        // Zero can move down
-                        upMoves++;
-                        moveDown(0);
                     }
                 }
-            }
+                if (upMoves == zeroYMovesPositive) {
+                    if (zeroXMoves < 0) {
+                        for (int i = 1; i <= zeroXMovesPositive; i++) {
+                            if (board[zeroCoordinates[0] + zeroYMovesPositive][zeroCoordinates[1] - i] > num || board[zeroCoordinates[0] + zeroYMovesPositive][zeroCoordinates[1] - i] > num - boardLength && leftColumnNumber) {
+                                // Zero can move left
+                                leftMoves++;
+                            }
+                        }
+                        if (leftMoves == zeroXMovesPositive) {
+                            routeOne = upMoves + leftMoves;
+                        }
+                    }
+                }
+
+                     else if (zeroCoordinates[1] > 0) {
+                        // Zero will stay within the boundaries
+
+                    } else if (zeroCoordinates[1] < boardLength - 1) {
+                        // Zero will stay within the boundaries
+                        if (board[zeroCoordinates[0] + i][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + i][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
+                            // Zero can move down
+                            upMoves++;
+                            moveDown(0);
+                        }
+                    }
+                }
+
 
 
 
@@ -413,3 +562,7 @@ public class SlidePuzzle {
         return listOfMoves;
     }
 }
+
+// if zero needs to go up it will never make sense for it to go down. no down conditional required.
+// if zero is left of the number it should go up the left side.
+// if zero is right of the number it should go up the right side.

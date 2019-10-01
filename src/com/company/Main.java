@@ -4,30 +4,32 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        SlidePuzzle puzzle = new SlidePuzzle();
+        Puzzle puzzle = new Puzzle();
+        SlidePuzzle slidePuzzle = new SlidePuzzle();
+//        puzzle.setBoard();
         System.out.println(puzzle.printBoard());
 
-        puzzle.positionZero(1);
+        slidePuzzle.positionZero(1);
 
 //        for (int i = 1; i < 9; i++) {
 //        while(!(Arrays.equals(puzzle.getBoard(), puzzle.getFinishedPuzzle())) && puzzle.getMoveCount() < 160) {
-//            puzzle.positionNumber(1);
-//            puzzle.positionNumber(2);
-//            puzzle.positionNumber(3);
-//            puzzle.positionNumber(4);
-//            puzzle.positionNumber(5);
-//            puzzle.positionNumber(9);
-//            puzzle.positionNumber(13);
-//            puzzle.positionNumber(6);
-//            puzzle.positionNumber(7);
-//            puzzle.positionNumber(8);
-//            puzzle.positionNumber(10);
-//            puzzle.positionNumber(11);
-//            puzzle.positionNumber(12);
-//            puzzle.positionNumber(14);
-//            puzzle.positionNumber(15);
-//            System.out.println("The puzzle has been solved.");
-//            System.out.println("It took " + puzzle.getMoveCount() + " moves to solve the puzzle.");
+            puzzle.positionNumber(1);
+            puzzle.positionNumber(2);
+            puzzle.positionNumber(3);
+            puzzle.positionNumber(4);
+            puzzle.positionNumber(5);
+            puzzle.positionNumber(9);
+            puzzle.positionNumber(13);
+            puzzle.positionNumber(6);
+            puzzle.positionNumber(7);
+            puzzle.positionNumber(8);
+            puzzle.positionNumber(10);
+            puzzle.positionNumber(11);
+            puzzle.positionNumber(12);
+            puzzle.positionNumber(14);
+            puzzle.positionNumber(15);
+            System.out.println("The puzzle has been solved.");
+            System.out.println("It took " + puzzle.getMoveCount() + " moves to solve the puzzle.");
 
 //        }
 

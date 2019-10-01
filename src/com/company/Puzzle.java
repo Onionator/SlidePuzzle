@@ -1,10 +1,11 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Puzzle {
-    int[][] board = {{10, 3, 11, 4}, {1, 5, 14, 7}, {8, 6, 13, 2}, {12, 9, 15, 0} };
+    int[][] board = {{10, 3, 11, 4}, {1, 5, 14, 7}, {8, 6, 13, 2}, {12, 9, 15, 0}};
     int boardLength = board.length;
 
     protected Puzzle() {
@@ -15,23 +16,9 @@ public class Puzzle {
         return board;
     }
 
-    public void setBoard(int[][] board) {
-        this.board = board;
+    public void setBoard() {
+        this.board = newBoard();
     }
-
-    public String printBoard() {
-        String output = "";
-        for (int[] y: board) {
-            for (int x: y) {
-                output += Integer.toString(x);
-                output += (x < 10) ? ",  ": ", ";
-            }
-            output +=  "\n";
-        }
-        return output;
-    }
-
-
 
     // find the coordinates of a number and return an int array with y, x coordinates
     public int[] find(int num) {
@@ -47,12 +34,93 @@ public class Puzzle {
 
 
 
+    int moveCount = 0;
+    int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
+
+    public int[][] newBoard() {
+        // The puzzle should always be solvable.
+        // If the board length is even and the zero is in in an even row (to determine even row start counting at 1 from the bottom) and the number of inversions is odd then it is solvable.
+        // If the board length is even and the zero is in in an odd row (to determine odd row start counting at 1 from the bottom) and the number of inversions is even then it is solvable.
+        // If the board length is odd and the number of inversions is even then it is solvable.
+
+        int num = 4;
+        int[][] arrayOfArrays = new int[num][num];
+        int numSquared = num * num;
+        Random randomNum = new Random();
+        List<Integer> listOfInts = IntStream.range(0, numSquared).boxed().collect(Collectors.toList());
+        Collections.shuffle(listOfInts);
+        int count = 0;
+        for (int y = 0; y < num; y++) {
+            for (int x = 0; x < num; x++) {
+                arrayOfArrays[y][x] = listOfInts.get(count);
+                count++;
+            }
+        }
+
+        // Can the puzzle be solved?
+        int zeroY = listOfInts.indexOf(0) / num;
+        System.out.println(zeroY);
+        int inversions = 0;
+        for (int i = 0; i < listOfInts.size(); i++) {
+            while (listOfInts.indexOf(i) != i) {
+                int index = listOfInts.indexOf(i);
+                int temp;
+                if (index > i) {
+                    temp = listOfInts.get(index - 1);
+                    listOfInts.set(index - 1, i);
+                } else {
+                    temp = listOfInts.get(index + 1);
+                    listOfInts.set(index + 1, i);
+                }
+                listOfInts.set(index, temp);
+                inversions++;
+            }
+        }
+
+        if (zeroY % 2 == 0 && inversions % 2 == 1) {
+            System.out.println("Can be solved");
+        } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
+            System.out.println("Can be solved");
+        } else {
+            System.out.println("Can't be solved.");
+            newBoard();
+        }
+
+        return arrayOfArrays;
+    }
+
+    public String printBoard() {
+        String output = "";
+        for (int[] y: board) {
+            for (int x: y) {
+                output += Integer.toString(x);
+                output += (x < 10) ? ",  ": ", ";
+            }
+            output +=  "\n";
+        }
+        return output;
+    }
+
+    public int getMoveCount() {
+        return moveCount;
+    }
+
+    public void setMoveCount(int moveCount) {
+        this.moveCount = moveCount;
+    }
+
+    public int[][] getFinishedPuzzle() {
+        return finishedPuzzle;
+    }
+
     public void moveUp(int num) {
         int[] numCoordinates = find(num);
         int tempNum = board[numCoordinates[0] - 1][numCoordinates[1]];
         if (tempNum == 0 || num == 0) {
             board[numCoordinates[0] - 1][numCoordinates[1]] = board[numCoordinates[0]][numCoordinates[1]];
             board[numCoordinates[0]][numCoordinates[1]] = tempNum;
+            setMoveCount(getMoveCount() + 1);
+            System.out.println(printBoard());
         }
     }
 
@@ -62,6 +130,8 @@ public class Puzzle {
         if (tempNum == 0 || num == 0) {
             board[numCoordinates[0]][numCoordinates[1] - 1] = board[numCoordinates[0]][numCoordinates[1]];
             board[numCoordinates[0]][numCoordinates[1]] = tempNum;
+            setMoveCount(getMoveCount() + 1);
+            System.out.println(printBoard());
         }
     }
 
@@ -71,6 +141,8 @@ public class Puzzle {
         if (tempNum == 0 || num == 0) {
             board[numCoordinates[0] + 1][numCoordinates[1]] = board[numCoordinates[0]][numCoordinates[1]];
             board[numCoordinates[0]][numCoordinates[1]] = tempNum;
+            setMoveCount(getMoveCount() + 1);
+            System.out.println(printBoard());
         }
     }
 
@@ -80,6 +152,8 @@ public class Puzzle {
         if (tempNum == 0 || num == 0) {
             board[numCoordinates[0]][numCoordinates[1] + 1] = board[numCoordinates[0]][numCoordinates[1]];
             board[numCoordinates[0]][numCoordinates[1]] = tempNum;
+            setMoveCount(getMoveCount() + 1);
+            System.out.println(printBoard());
         }
     }
 
@@ -152,12 +226,10 @@ public class Puzzle {
                     // move zero right
                     moveRight(0);
                 }
-                System.out.println(printBoard());
                 zeroCoordinates = find(0);
                 if (numCoordinates[0] - 1 == zeroCoordinates[0] && numCoordinates[1] == zeroCoordinates[1]) {
                     // if zero is directly above num move num up
                     moveUp(num);
-                    System.out.println(printBoard());
                 }
             } else if (numCoordinates[0] - numEndCoordinates[0] < 0) {
                 System.out.println("Num needs to go down.");
@@ -194,12 +266,10 @@ public class Puzzle {
                     // move zero up
                     moveUp(0);
                 }
-                System.out.println(printBoard());
                 zeroCoordinates = find(0);
                 if (numCoordinates[0] + 1 == zeroCoordinates[0] && numCoordinates[1] == zeroCoordinates[1]) {
                     // if zero is directly below num move num down
                     moveDown(num);
-                    System.out.println(printBoard());
                 }
             } else if (numCoordinates[1] - numEndCoordinates[1] > 0) {
                 System.out.println("Num needs to go left.");
@@ -236,12 +306,10 @@ public class Puzzle {
                     // move zero right
                     moveRight(0);
                 }
-                System.out.println(printBoard());
                 zeroCoordinates = find(0);
                 if (numCoordinates[0] == zeroCoordinates[0] && numCoordinates[1] - 1 == zeroCoordinates[1]) {
                     // if zero is directly left of num move num left
                     moveLeft(num);
-                    System.out.println(printBoard());
                 }
             } else if ((numCoordinates[1] - numEndCoordinates[1] < 0)) {
                 System.out.println("Num needs to go right.");
@@ -278,12 +346,10 @@ public class Puzzle {
                     // move zero left
                     moveLeft(0);
                 }
-                System.out.println(printBoard());
                 zeroCoordinates = find(0);
                 if (numCoordinates[0] == zeroCoordinates[0] && numCoordinates[1] + 1 == zeroCoordinates[1]) {
                     // if zero is directly right of num move run right
                     moveRight(num);
-                    System.out.println(printBoard());
                 }
             }
             zeroCoordinates = find(0);
@@ -296,23 +362,14 @@ public class Puzzle {
                     moveUp(0);
                 }
                 moveLeft(0);
-                System.out.println(printBoard());
                 moveUp(0);
-                System.out.println(printBoard());
                 moveRight(0);
-                System.out.println(printBoard());
                 moveRight(0);
-                System.out.println(printBoard());
                 moveDown(0);
-                System.out.println(printBoard());
                 moveLeft(0);
-                System.out.println(printBoard());
                 moveUp(0);
-                System.out.println(printBoard());
                 moveLeft(0);
-                System.out.println(printBoard());
                 moveDown(0);
-                System.out.println(printBoard());
                 break;
             } else if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestDown) {
                 System.out.println("num is: " + num);
@@ -320,35 +377,23 @@ public class Puzzle {
                 if (Arrays.equals(zeroCoordinates, new int[] {numCoordinates[0], numCoordinates[1] + 1})) {
                     // if the 0 is to the right of the number then move it above
                     moveUp(0);
-                    System.out.println(printBoard());
                     moveLeft(0);
-                    System.out.println(printBoard());
                 }
                 moveUp(0);
-                System.out.println(printBoard());
                 moveLeft(0);
-                System.out.println(printBoard());
                 moveDown(0);
-                System.out.println(printBoard());
                 moveDown(0);
-                System.out.println(printBoard());
                 moveRight(0);
-                System.out.println(printBoard());
                 moveUp(0);
-                System.out.println(printBoard());
                 moveLeft(0);
-                System.out.println(printBoard());
                 moveUp(0);
-                System.out.println(printBoard());
                 moveRight(0);
-                System.out.println(printBoard());
                 break;
             }
             numCoordinates = find(num);
         }
         if (numCoordinates[0] > zeroCoordinates[0]) {
             moveDown(0);
-            System.out.println(printBoard());
         }
         return true;
     }
