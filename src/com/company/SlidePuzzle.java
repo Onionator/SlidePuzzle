@@ -8,10 +8,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SlidePuzzle {
-    int[][] board = {{1,  2,  3,  15},
-            {12, 0,  8,  6},
-            {4,  14, 7,  11},
-            {9,  5,  13, 10}};
+    int[][] board = {{0,  1,  13, 9},
+            {2,  11, 14, 15},
+                    {3,  6,  12, 7},
+                            {10, 8,  5,  4}}
+    ;
     int boardLength = board.length;
     int moveCount = 0;
     int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
@@ -50,21 +51,12 @@ public class SlidePuzzle {
 
         // Can the puzzle be solved?
         int zeroY = listOfInts.indexOf(0) / num;
-        System.out.println(zeroY);
         int inversions = 0;
-        for (int i = 0; i < listOfInts.size(); i++) {
-            while (listOfInts.indexOf(i) != i) {
-                int index = listOfInts.indexOf(i);
-                int temp;
-                if (index > i) {
-                    temp = listOfInts.get(index - 1);
-                    listOfInts.set(index - 1, i);
-                } else {
-                    temp = listOfInts.get(index + 1);
-                    listOfInts.set(index + 1, i);
+        for (int i = 0; i < listOfInts.size() - 1; i++) {
+            for (int n = i + 1; n < listOfInts.size(); n++) {
+                if (listOfInts.get(i) > listOfInts.get(n)) {
+                    inversions++;
                 }
-                listOfInts.set(index, temp);
-                inversions++;
             }
         }
 
@@ -84,19 +76,12 @@ public class SlidePuzzle {
         // Can the puzzle be solved?
         int zeroY = listOfInts.indexOf(0) / boardLength;
         int inversions = 0;
-        for (int i = 0; i < listOfInts.size(); i++) {
-            while (listOfInts.indexOf(i) != i) {
-                int index = listOfInts.indexOf(i);
-                int temp;
-                if (index > i) {
-                    temp = listOfInts.get(index - 1);
-                    listOfInts.set(index - 1, i);
-                } else {
-                    temp = listOfInts.get(index + 1);
-                    listOfInts.set(index + 1, i);
+        // Can the puzzle be solved?
+        for (int i = 0; i < listOfInts.size() - 1; i++) {
+            for (int n = i + 1; n < listOfInts.size(); n++) {
+                if (listOfInts.get(i) > listOfInts.get(n)) {
+                    inversions++;
                 }
-                listOfInts.set(index, temp);
-                inversions++;
             }
         }
 
@@ -107,6 +92,8 @@ public class SlidePuzzle {
         } else {
             System.out.println("Can't be solved.");
         }
+        System.out.println("Inversions: " + inversions);
+        System.out.println("zeroY: " + zeroY);
     }
 
     public String printBoard() {
@@ -253,21 +240,26 @@ public class SlidePuzzle {
                 }
             } else if (Arrays.equals(numCoordinates, numEndCoordinates) && lastLeftColumnNumber) {
                 // number belongs on the bottom left corner and is currently one space to the right
-                if (Arrays.equals(zeroCoordinates, new int[]{numCoordinates[0], numCoordinates[1] + 1})) {
-                    // if the 0 is to the right of the number then move it above
+                if (zeroCoordinates[1] == numEndCoordinates[1] - 1) {
+                    // if zero is where num needs to be then move num left
+                    moveLeft(num);
+                } else {
+                    if (Arrays.equals(zeroCoordinates, new int[]{numCoordinates[0], numCoordinates[1] + 1})) {
+                        // if the 0 is to the right of the number then move it above
+                        moveUp(0);
+                        moveLeft(0);
+                    }
                     moveUp(0);
                     moveLeft(0);
+                    moveDown(0);
+                    moveDown(0);
+                    moveRight(0);
+                    moveUp(0);
+                    moveLeft(0);
+                    moveUp(0);
+                    moveRight(0);
+                    break;
                 }
-                moveUp(0);
-                moveLeft(0);
-                moveDown(0);
-                moveDown(0);
-                moveRight(0);
-                moveUp(0);
-                moveLeft(0);
-                moveUp(0);
-                moveRight(0);
-                break;
             } else if (Arrays.equals(numCoordinates, numEndCoordinates)) {
                 System.out.println("It's over now.");
                 break;
@@ -364,6 +356,14 @@ public class SlidePuzzle {
                             if (yMoves > 0) {
                                 moveDown(num);
                             }
+                        } else {
+                            // move all the way around the number
+                            moveRight(0);
+                            moveDown(0);
+                            moveDown(0);
+                            moveLeft(0);
+                            moveLeft(0);
+                            moveUp(0);
                         }
                     } else if (zeroCoordinates[0] == boardLength - 1) {
                         // Zero is at the bottom therefore it can move up
@@ -397,11 +397,13 @@ public class SlidePuzzle {
                     // move zero right
                     moveRight(0);
                 }
-            } else if (yMoves > 0) {
+            // RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT
+            } else if (xMoves > 0) {
                 System.out.println("num needs to go right");
+                // errors here with num going right
                 int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] + 1};
                 // if num needs to go right
-                if (board[numCoordinates[0]][numCoordinates[1] + 1] == 0 && leftColumnNumber) {
+                if (board[numCoordinates[0]][numCoordinates[1] + 1] == 0 && numIsFarthestRight) {
                     // Num can move right
                     moveRight(num);
                 } else if (zeroEndCoordinates[1] - zeroCoordinates[1] > 0) {
@@ -409,7 +411,41 @@ public class SlidePuzzle {
                     if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
                         // Zero can move right
                         moveRight(0);
+                    } else if (zeroCoordinates[0] + 1 == boardLength) {
+                        moveUp(0);
+                        moveRight(0);
+                        moveDown(0);
+                        moveRight(0);
+                        moveUp(0);
+                        moveLeft(0);
+                        moveLeft(0);
+                        moveDown(0);
+                        moveRight(0);
+                        moveRight(0);
+                    } else {
+                        // move zero down then right first
+                        moveDown(0);
+                        moveRight(0);
+                        moveRight(0);
+                        moveUp(0);
+                        moveRight(num);
                     }
+                } else if (zeroEndCoordinates[0] - zeroCoordinates[0] > 0) {
+                    // if zero needs to go down
+                    moveDown(0);
+                } else if (zeroEndCoordinates[1] - zeroCoordinates[1] < 0) {
+                    // if zero needs to go left
+                    if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num) {
+                        // Zero can move left
+                        moveLeft(0);
+                    } else {
+                        // move zero down then left
+                        moveDown(0);
+                        moveLeft(0);
+                    }
+                } else if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
+                    // if zero needs to move up
+                    moveUp(0);
                 }
             }
         }
