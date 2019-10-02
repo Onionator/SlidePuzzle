@@ -1,17 +1,11 @@
 package com.company;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SlidePuzzle {
-    int[][] board = {{1,  3,  9,  11},
-            {15, 13, 10, 4},
-            {2,  0,  14, 6},
-            {8,  5,  12, 7,  }};
+    int[][] board = newBoard();
     int boardLength = board.length;
     int moveCount = 0;
     int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
@@ -28,57 +22,70 @@ public class SlidePuzzle {
         this.board = board;
     }
 
+    public List isSolvable(int num) {
+        // one function will generate a random board while the other will call it and test the board. if the board is not solvable it will call the function again until the board is solvable.
+
+        int numSquared = num * num;
+        Random randomNum = new Random();
+        List<Integer> listOfInts = IntStream.range(0, numSquared).boxed().collect(Collectors.toList());
+        Collections.shuffle(listOfInts);
+
+        return listOfInts;
+    }
+
     public int[][] newBoard() {
         // The puzzle should always be solvable.
         // If the board length is even and the zero is in in an even row (to determine even row start counting at 1 from the bottom) and the number of inversions is odd then it is solvable.
         // If the board length is even and the zero is in in an odd row (to determine odd row start counting at 1 from the bottom) and the number of inversions is even then it is solvable.
         // If the board length is odd and the number of inversions is even then it is solvable.
-
         int num = 4;
+        List<Integer> solvable = null;
+        boolean notSolvable = true;
+        while (notSolvable) {
+            // while a solvable puzzle has not been generated
+            List<Integer> listOfInts = isSolvable(num);
+            solvable = new ArrayList(listOfInts);
+            // Can the puzzle be solved?
+            int zeroY = num - (listOfInts.indexOf(0) / num);
+            System.out.println("zeroY testing: " + (num - (listOfInts.indexOf(0) / num)));
+            System.out.println(listOfInts);
+            listOfInts.remove(listOfInts.indexOf(0));
+
+            int inversions = 0;
+            for (int i = 0; i < (listOfInts.size() - 1); i++) {
+                for (int n = (i + 1); n < listOfInts.size(); n++) {
+                    if (listOfInts.get(i) > listOfInts.get(n)) {
+                        inversions++;
+                    }
+                }
+            }
+
+            if (zeroY % 2 == 0 && inversions % 2 == 1) {
+                System.out.println("Can be solved");
+                System.out.println("The first if let the numbers pass");
+                System.out.println("Inversions: " + inversions);
+                System.out.println("zeroY: " + zeroY);
+                notSolvable = false;
+            } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
+                System.out.println("Can be solved");
+                System.out.println("Inversions: " + inversions);
+                System.out.println("zeroY: " + zeroY);
+                notSolvable = false;
+            } else {
+                System.out.println("Can't be solved.");
+            }
+        }
+
         int[][] arrayOfArrays = new int[num][num];
-        int numSquared = num * num;
-        Random randomNum = new Random();
-        List<Integer> listOfInts = IntStream.range(0, numSquared).boxed().collect(Collectors.toList());
-        Collections.shuffle(listOfInts);
         int count = 0;
         for (int y = 0; y < num; y++) {
             for (int x = 0; x < num; x++) {
-                arrayOfArrays[y][x] = listOfInts.get(count);
+                arrayOfArrays[y][x] = solvable.get(count);
                 count++;
             }
         }
 
-        // Can the puzzle be solved?
-        int zeroY = num - (listOfInts.indexOf(0) / num);
-        System.out.println("zeroY testing: " + (num -(listOfInts.indexOf(0) / num)));
-        System.out.println(listOfInts);
-        listOfInts.remove(listOfInts.indexOf(0));
-
-        int inversions = 0;
-        for (int i = 0; i < (listOfInts.size() - 1); i++) {
-            for (int n = (i + 1); n < listOfInts.size(); n++) {
-                if (listOfInts.get(i) > listOfInts.get(n)) {
-                    inversions++;
-                }
-            }
-        }
-
-        if (zeroY % 2 == 0 && inversions % 2 == 1) {
-            System.out.println("Can be solved");
-            System.out.println("The first if let the numbers pass");
-            System.out.println("Inversions: " + inversions);
-            System.out.println("zeroY: " + zeroY);
-            return arrayOfArrays;
-        } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
-            System.out.println("Can be solved");
-            System.out.println("Inversions: " + inversions);
-            System.out.println("zeroY: " + zeroY);
-            return arrayOfArrays;
-        } else {
-            System.out.println("Can't be solved.");
-            newBoard();
-            return arrayOfArrays;
-        }
+        return arrayOfArrays;
     }
 
     public String printBoard() {
@@ -167,7 +174,6 @@ public class SlidePuzzle {
             int count = 0;
         while (count < 30) {
             count++;
-            System.out.println("count: " + count);
             int[] numCoordinates = find(num);
             int[] zeroCoordinates = find(0);
             int[] numEndCoordinates = {(num - 1) / boardLength, (num % boardLength) - 1};
@@ -192,10 +198,6 @@ public class SlidePuzzle {
                     lastLeftColumnNumber = true;
                 }
             }
-            System.out.println("lastLeftColumnNumber: " + lastLeftColumnNumber + " " + numCoordinates[0] + " " + (boardLength - 1));
-            System.out.println("num is: " + num);
-            System.out.println("numCoordinates: " + Arrays.toString(numCoordinates));
-            System.out.println("numEndCoordinates: " + Arrays.toString(numEndCoordinates));
 
             if (Arrays.equals(numCoordinates, numEndCoordinates) && numIsFarthestRight) {
                 // if the number is below where it needs to be and it is the last number in a row start the move sequence
@@ -210,27 +212,23 @@ public class SlidePuzzle {
                     int zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
                     int zeroX = zeroEndCoordinates[1] - zeroCoordinates[1];
                     while (zeroX < 0) {
-                        System.out.println("Left");
                         // if zero is not in the correct position to start the sequence then move it
                         moveLeft(0);
                         zeroCoordinates = find(0);
                         zeroX = zeroEndCoordinates[1] - zeroCoordinates[1];
                     }
                     while (zeroX > 0) {
-                        System.out.println("Right");
                         // if zero is not in the correct position to start the sequence then move it
                         moveRight(0);
                         zeroCoordinates = find(0);
                         zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
                     }
                     while (zeroY < 0) {
-                        System.out.println("Up");
                         // if zero is not in the correct position to start the sequence then move it
                         moveUp(0);
                         zeroCoordinates = find(0);
                         zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
                     }
-                    System.out.println("Starting sequence");
                     moveUp(0);
                     moveRight(0);
                     moveRight(0);
@@ -517,6 +515,7 @@ public class SlidePuzzle {
                     // if zero needs to move up
                     moveUp(0);
                 }
+        // DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN DOWN
             } else if (yMoves > 0) {
                 System.out.println("num needs to move down");
                 // if num needs to move down
@@ -545,6 +544,9 @@ public class SlidePuzzle {
                 } else if (zeroEndCoordinates[1] - zeroCoordinates[1] > 0) {
                     // if zero needs to move right
                     moveRight(0);
+                } else if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
+                    // if zero needs to move up
+                    moveUp(0);
                 }
             }
         }
