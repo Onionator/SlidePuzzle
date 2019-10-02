@@ -23,8 +23,7 @@ public class SlidePuzzle {
     }
 
     public List isSolvable(int num) {
-        // one function will generate a random board while the other will call it and test the board. if the board is not solvable it will call the function again until the board is solvable.
-
+        // generate a list of random numbers to make the board with
         int numSquared = num * num;
         Random randomNum = new Random();
         List<Integer> listOfInts = IntStream.range(0, numSquared).boxed().collect(Collectors.toList());
@@ -47,8 +46,6 @@ public class SlidePuzzle {
             solvable = new ArrayList(listOfInts);
             // Can the puzzle be solved?
             int zeroY = num - (listOfInts.indexOf(0) / num);
-            System.out.println("zeroY testing: " + (num - (listOfInts.indexOf(0) / num)));
-            System.out.println(listOfInts);
             listOfInts.remove(listOfInts.indexOf(0));
 
             int inversions = 0;
@@ -62,14 +59,9 @@ public class SlidePuzzle {
 
             if (zeroY % 2 == 0 && inversions % 2 == 1) {
                 System.out.println("Can be solved");
-                System.out.println("The first if let the numbers pass");
-                System.out.println("Inversions: " + inversions);
-                System.out.println("zeroY: " + zeroY);
                 notSolvable = false;
             } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
                 System.out.println("Can be solved");
-                System.out.println("Inversions: " + inversions);
-                System.out.println("zeroY: " + zeroY);
                 notSolvable = false;
             } else {
                 System.out.println("Can't be solved.");
@@ -271,7 +263,7 @@ public class SlidePuzzle {
                         break;
                 }
             } else if (Arrays.equals(numCoordinates, numEndCoordinates)) {
-                System.out.println("It's over now.");
+                System.out.println(num + " is now in its place.");
                 break;
             }
 
@@ -282,8 +274,6 @@ public class SlidePuzzle {
             if (yMoves < 0) {
                 System.out.println("num needs to go up");
                 int[] zeroEndCoordinates = {numCoordinates[0] - 1, numCoordinates[1]};
-                System.out.println("zeroCoordinates: " + Arrays.toString(zeroCoordinates));
-                System.out.println("zeroEndCoordinates: " + Arrays.toString(zeroEndCoordinates));
                 // num needs to go up
                 if (Arrays.equals(zeroCoordinates, zeroEndCoordinates)) {
                     // num is ready to move up
@@ -298,7 +288,6 @@ public class SlidePuzzle {
                         }
                     } else if (zeroCoordinates[1] < boardLength - 1) {
                         // Zero will stay within the boundaries
-                        System.out.println("getting to this random spot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         if (xMoves > 0 && board[numCoordinates[0]][numCoordinates[1] + 1] == 0) {
                             // num can move right and needs to move right then move it right
                             moveRight(num);
@@ -318,7 +307,6 @@ public class SlidePuzzle {
                                 moveRight(num);
                             }
                         } else {
-                            System.out.println("num is: " + num + " this weird issue is true.");
                             // fix this issue. special thanks to Ben B-C.
                             // 1,  2,  3,  4,
                             // 5,  6,  7,  8,
@@ -445,9 +433,6 @@ public class SlidePuzzle {
                     }
                 } else if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
                     // zero needs to go up
-                    System.out.println("board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength: " + (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength));
-                    System.out.println(board[zeroCoordinates[0] - 1][zeroCoordinates[1]]);
-                    System.out.println(num - boardLength);
                     if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
                         // Zero can move up
                         moveUp(0);
@@ -550,13 +535,5 @@ public class SlidePuzzle {
                 }
             }
         }
-    }
-
-
-
-    public void dumb() {
-
-
-
     }
 }
