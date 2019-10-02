@@ -46,7 +46,7 @@ public class SlidePuzzle {
         }
 
         // Can the puzzle be solved?
-        int zeroY = ((listOfInts.indexOf(0) / num) - boardLength);
+        int zeroY = num - (listOfInts.indexOf(0) / num);
         listOfInts.remove(listOfInts.indexOf(0));
         System.out.println(listOfInts);
 
@@ -61,6 +61,8 @@ public class SlidePuzzle {
 
         if (zeroY % 2 == 0 && inversions % 2 == 1) {
             System.out.println("Can be solved");
+            System.out.println("num: " + num);
+            System.out.println("listOfInts.indexOf(0) / num: " + (listOfInts.indexOf(0) / num));
             System.out.println("Inversions: " + inversions);
             System.out.println("zeroY: " + zeroY);
         } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
@@ -498,254 +500,25 @@ public class SlidePuzzle {
             }
         }
     }
+
+//        1,  2,  3,  4,
+//        5,  6,  7,  8,
+//        9,  10, 14, 15,
+//        13, 0,  11, 12,
+
+    public void dumb() {
+        moveLeft(0);
+        moveUp(0);
+        moveRight(0);
+        moveRight(0);
+        moveDown(0);
+        moveLeft(0);
+        moveUp(0);
+        moveRight(0);
+        moveDown(0);
+        moveRight(0);
+        moveUp(0);
+        moveRight(0);
+
+    }
 }
-//
-//        // if num needs to go left and zero is above it and zero can't go left...
-//        moveRight(0);
-//        moveDown(0);
-//        moveDown(0);
-//        moveLeft(0);
-//        moveLeft(0);
-//        moveUp(0);
-//
-//        // if num needs to go up and zero is left of it and zero can't go up...
-//        moveDown(0);
-//        moveRight(0);
-//        moveRight(0);
-//        moveUp(0);
-//        moveUp(0);
-//        moveLeft(0);
-//
-//        // if num is the last in a row and is directly below its spot...
-//            // if zero is below num
-//            moveLeft(0);
-//            moveUp(0);
-//        moveLeft(0);
-//        moveUp(0);
-//        moveRight(0);
-//        moveRight(0);
-//        moveDown(0);
-//        moveLeft(0);
-//        moveUp(0);
-//        moveLeft(0);
-//        moveDown(0);
-//
-//        // if num is the last (bottom) in a column and is directly right of where it needs to be
-//            // if zero is right of the number
-//            moveUp(0);
-//            moveLeft(0);
-//        moveUp(0);
-//        moveLeft(0);
-//        moveDown(0);
-//        moveDown(0);
-//        moveRight(0);
-//        moveUp(0);
-//        moveLeft(0);
-//        moveUp(0);
-//        moveRight(0);
-//
-//
-//        // Assuming the number is 1 and it needs to move up and left determine if it should move up or left first.
-//        if (yMoves < 0) {
-//            // The number needs to move up
-//            // How many moves would it take to get zero in position to move the number up?
-//            int[] zeroEndCoordinates = {numCoordinates[0] - 1, numCoordinates[1]};
-//            int zeroYMoves = zeroEndCoordinates[0] - numCoordinates[0];
-//            int zeroXMoves = zeroEndCoordinates[1] - numCoordinates[1];
-//            // Can zero make this move without affecting an already placed number?
-//            if (zeroYMoves < 0) {
-//                // If zero needs to move up
-//                int zeroYMovesPositive = zeroYMoves * -1;
-//                int zeroXMovesPositive = zeroXMoves < 0 ? zeroXMoves * -1 : zeroXMoves;
-//
-//
-//                // see if zero can move up as fas as it needs to. then add move sure it would end up in its spot. then add the moves together and see if one route is short than another to determine which direction it should go first.
-//                for (int i = 1; i <= zeroYMovesPositive; i++) {
-//                    if (board[zeroCoordinates[0] - i][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - i][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                        // Zero can move up
-//                        upMoves++;
-//                    }
-//                }
-//                if (upMoves == zeroYMovesPositive) {
-//                    if (zeroXMoves < 0) {
-//                        for (int i = 1; i <= zeroXMovesPositive; i++) {
-//                            if (board[zeroCoordinates[0] + zeroYMovesPositive][zeroCoordinates[1] - i] > num || board[zeroCoordinates[0] + zeroYMovesPositive][zeroCoordinates[1] - i] > num - boardLength && leftColumnNumber) {
-//                                // Zero can move left
-//                                leftMoves++;
-//                            }
-//                        }
-//                        if (leftMoves == zeroXMovesPositive) {
-//                            routeOne = upMoves + leftMoves;
-//                        }
-//                    }
-//                }
-//
-//                     else if (zeroCoordinates[1] > 0) {
-//                        // Zero will stay within the boundaries
-//
-//                    } else if (zeroCoordinates[1] < boardLength - 1) {
-//                        // Zero will stay within the boundaries
-//                        if (board[zeroCoordinates[0] + i][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + i][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                            // Zero can move down
-//                            upMoves++;
-//                            moveDown(0);
-//                        }
-//                    }
-//                }
-//
-//
-//
-//
-//        }
-//        if (xMoves < 0) {
-//            // The number needs to move left
-//            // How many moves would it take to get zero in position to move the number left?
-//
-//            // Can zero make this move without affecting an already placed number?
-//            // If the num is greater than the number zero is trying to swap with then it is true.
-//            // The leftColumnNumbers have some exceptions to the first conditional because they are not moved in numerical order.
-//            int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] - 1};
-//            int zeroYMoves = zeroEndCoordinates[0] - numCoordinates[0];
-//            int ZeroXMoves = zeroEndCoordinates[1] - numCoordinates[1];
-//
-//            System.out.println(zeroOptions(num));
-//        }
-//        if (yMoves > 0) {
-//            // The number needs to move down
-//            // How many moves would it take to get zero in position to move the number down?
-//
-//            // Can zero make this move without affecting an already placed number?
-//            // If the num is greater than the number zero is trying to swap with then it is true.
-//            // The leftColumnNumbers have some exceptions to the first conditional because they are not moved in numerical order.
-//            int[] zeroEndCoordinates = {numCoordinates[0] + 1, numCoordinates[1]};
-//            int zeroYMoves = zeroEndCoordinates[0] - numCoordinates[0];
-//            int ZeroXMoves = zeroEndCoordinates[1] - numCoordinates[1];
-//
-//            System.out.println(zeroOptions(num));
-//        }
-//        if (xMoves > 0) {
-//            // The number needs to move right
-//            // How many moves would it take to get zero in position to move the number right?
-//
-//            // Can zero make this move without affecting an already placed number?
-//            // If the num is greater than the number zero is trying to swap with then it is true.
-//            // The leftColumnNumbers have some exceptions to the first conditional because they are not moved in numerical order.
-//            int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] + 1};
-//            int zeroYMoves = zeroEndCoordinates[0] - numCoordinates[0];
-//            int ZeroXMoves = zeroEndCoordinates[1] - numCoordinates[1];
-//
-//            System.out.println(zeroOptions(num));
-//        }
-//
-//        // Determine the proper order then move to zero into position
-//
-//
-//    }
-//
-//    public List<String> zeroOptions(int num) {
-//        int[] numCoordinates = find(num);
-//        int[] zeroCoordinates = find(0);
-//        int[] zeroEndCoordinates = {numCoordinates[0], numCoordinates[1] + 1};
-//        int zeroYMoves = zeroEndCoordinates[0] - numCoordinates[0];
-//        int zeroXMoves = zeroEndCoordinates[1] - numCoordinates[1];
-//        List<String> listOfMoves = null;
-//        boolean leftColumnNumber = false;
-//
-//
-//        if (zeroYMoves < 0) {
-//            // If zero needs to move up
-//            if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move up
-//                listOfMoves.add("Move zero up.");
-//                moveUp(0);
-//            } else if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move left
-//                listOfMoves.add("Move zero left.");
-//                moveLeft(0);
-//            } else if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move right
-//                listOfMoves.add("Move zero right.");
-//                moveRight(0);
-//            } else if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move down
-//                listOfMoves.add("Move zero down.");
-//                moveDown(0);
-//            }
-//        }
-//
-//        if (zeroXMoves < 0) {
-//            // If zero needs to move left
-//            if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move left
-//                listOfMoves.add("Move zero left.");
-//            } else if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move up
-//                listOfMoves.add("Move zero up.");
-//            } else if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move down
-//                listOfMoves.add("Move zero down.");
-//            } else if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move right
-//                listOfMoves.add("Move zero right.");
-//            }
-//        }
-//
-//        if (zeroYMoves > 0) {
-//            // If zero needs to move down
-//            if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move down
-//                listOfMoves.add("Move zero down.");
-//                moveDown(0);
-//            } else if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move left
-//                listOfMoves.add("Move zero left.");
-//                moveLeft(0);
-//            } else if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move right
-//                listOfMoves.add("Move zero right.");
-//                moveRight(0);
-//            } else if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move up
-//                listOfMoves.add("Move zero up.");
-//                moveUp(0);
-//            }
-//        }
-//
-//        if (zeroXMoves > 0) {
-//            // If zero needs to move right
-//            if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move right
-//                listOfMoves.add("Move zero right.");
-//            } else if (board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] - 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move up
-//                listOfMoves.add("Move zero up.");
-//            } else if (board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num || board[zeroCoordinates[0] + 1][zeroCoordinates[1]] > num - boardLength && leftColumnNumber) {
-//                // Zero can move down
-//                listOfMoves.add("Move zero down.");
-//            } else if (board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] - 1] > num - boardLength && leftColumnNumber) {
-//                // Zero can move left
-//                listOfMoves.add("Move zero left.");
-//            }
-//        }
-//        return listOfMoves;
-//    }
-//}
-
-// if zero needs to go up it will never make sense for it to go down. no down conditional required.
-// if zero is left of the number it should go up the left side.
-// if zero is right of the number it should go up the right side.
-
-//else if (yMoves > 0) {
-//        int[] zeroEndCoordinates = {numCoordinates[0] + 1, numCoordinates[1]};
-//        // if num needs to go down
-//        if (zeroEndCoordinates[0] - zeroCoordinates[0] > 0) {
-//        // if zero needs to go down
-//
-//        } else if (zeroEndCoordinates[1] - zeroCoordinates[1] < 0) {
-//        // zero needs to go left
-//        } else if (zeroEndCoordinates[1] - zeroCoordinates[1] > 0) {
-//        // zero needs to go right
-//        } else if (zeroEndCoordinates[0] - zeroCoordinates[0] < 0) {
-//        // zero needs to go left
-//        }
-//        }
