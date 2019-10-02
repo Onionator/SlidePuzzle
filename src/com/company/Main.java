@@ -9,14 +9,14 @@ public class Main {
 //        puzzle.setBoard();
         System.out.println(slidePuzzle.printBoard());
 
-        List<Integer> thing = Arrays.asList( new Integer[]{1,  2,  3,  4,
-                5,  6,  7,  8,
-                9,  10, 11, 12,
-                13, 15, 14, 0});
-
+//        List<Integer> thing = Arrays.asList(new Integer[]{2, 12, 11, 10,
+//                7, 15, 9, 1,
+//                4, 0, 3, 14,
+//                13, 5, 6, 8});
+//
 //        slidePuzzle.isSolvable(thing);
 
-
+    if (true) {
         slidePuzzle.solveFor(1);
         slidePuzzle.solveFor(2);
         slidePuzzle.solveFor(3);
@@ -32,7 +32,7 @@ public class Main {
         slidePuzzle.solveFor(12);
         slidePuzzle.solveFor(14);
         slidePuzzle.solveFor(15);
-
+    }
 
 //        for (int i = 1; i < 9; i++) {
 //        while(!(Arrays.equals(puzzle.getBoard(), puzzle.getFinishedPuzzle())) && puzzle.getMoveCount() < 160) {
@@ -56,3 +56,10 @@ public class Main {
 
         }
     }
+
+
+    // error with 13 in this instance 3,  15, 7,  0,
+//4,  2,  1,  11,
+//12, 14, 5,  9,
+//6,  10, 13, 8,
+

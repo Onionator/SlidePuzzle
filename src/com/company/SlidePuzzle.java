@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SlidePuzzle {
-    int[][] board = newBoard();
+    int[][] board = {{1,  3,  9,  11},
+            {15, 13, 10, 4},
+            {2,  0,  14, 6},
+            {8,  5,  12, 7,  }};
     int boardLength = board.length;
     int moveCount = 0;
     int[][] finishedPuzzle = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 0}};
@@ -47,8 +50,9 @@ public class SlidePuzzle {
 
         // Can the puzzle be solved?
         int zeroY = num - (listOfInts.indexOf(0) / num);
-        listOfInts.remove(listOfInts.indexOf(0));
+        System.out.println("zeroY testing: " + (num -(listOfInts.indexOf(0) / num)));
         System.out.println(listOfInts);
+        listOfInts.remove(listOfInts.indexOf(0));
 
         int inversions = 0;
         for (int i = 0; i < (listOfInts.size() - 1); i++) {
@@ -61,48 +65,20 @@ public class SlidePuzzle {
 
         if (zeroY % 2 == 0 && inversions % 2 == 1) {
             System.out.println("Can be solved");
-            System.out.println("num: " + num);
-            System.out.println("listOfInts.indexOf(0) / num: " + (listOfInts.indexOf(0) / num));
+            System.out.println("The first if let the numbers pass");
             System.out.println("Inversions: " + inversions);
             System.out.println("zeroY: " + zeroY);
+            return arrayOfArrays;
         } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
             System.out.println("Can be solved");
             System.out.println("Inversions: " + inversions);
             System.out.println("zeroY: " + zeroY);
+            return arrayOfArrays;
         } else {
             System.out.println("Can't be solved.");
             newBoard();
+            return arrayOfArrays;
         }
-
-
-        return arrayOfArrays;
-    }
-
-    public void isSolvable(List<Integer> listOfInts) {
-        // Can the puzzle be solved?
-        int zeroY = listOfInts.indexOf(0) / boardLength;
-        int inversions = -1;
-        // Can the puzzle be solved?
-        for (int i = 0; i < (listOfInts.size() - 1); i++) {
-            for (int n = i + 1; n < listOfInts.size(); n++) {
-                System.out.println("i: " + listOfInts.get(i));
-                System.out.println("n: " + listOfInts.get(n));
-                if (listOfInts.get(i) > listOfInts.get(n)) {
-                    inversions++;
-                    System.out.println(inversions);
-                }
-            }
-        }
-
-        if (zeroY % 2 == 0 && inversions % 2 == 1) {
-            System.out.println("Can be solved");
-        } else if (zeroY % 2 == 1 && inversions % 2 == 0) {
-            System.out.println("Can be solved");
-        } else {
-            System.out.println("Can't be solved.");
-        }
-        System.out.println("Inversions: " + inversions);
-        System.out.println("zeroY: " + zeroY);
     }
 
     public String printBoard() {
@@ -229,12 +205,32 @@ public class SlidePuzzle {
                     // num is ready to move up
                     moveUp(num);
                 } else {
-                    if (Arrays.equals(zeroCoordinates, new int[]{numCoordinates[0] + 1, numCoordinates[1]})) {
-                        // if the zero is beneath the number move it left 1 and up 1 first.
+                    zeroEndCoordinates = new int[] {numCoordinates[0], numCoordinates[1] - 2};
+                    System.out.println(Arrays.toString(zeroEndCoordinates));
+                    int zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
+                    int zeroX = zeroEndCoordinates[1] - zeroCoordinates[1];
+                    while (zeroX < 0) {
+                        System.out.println("Left");
+                        // if zero is not in the correct position to start the sequence then move it
                         moveLeft(0);
-                        moveUp(0);
+                        zeroCoordinates = find(0);
+                        zeroX = zeroEndCoordinates[1] - zeroCoordinates[1];
                     }
-                    moveLeft(0);
+                    while (zeroX > 0) {
+                        System.out.println("Right");
+                        // if zero is not in the correct position to start the sequence then move it
+                        moveRight(0);
+                        zeroCoordinates = find(0);
+                        zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
+                    }
+                    while (zeroY < 0) {
+                        System.out.println("Up");
+                        // if zero is not in the correct position to start the sequence then move it
+                        moveUp(0);
+                        zeroCoordinates = find(0);
+                        zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
+                    }
+                    System.out.println("Starting sequence");
                     moveUp(0);
                     moveRight(0);
                     moveRight(0);
@@ -251,21 +247,30 @@ public class SlidePuzzle {
                     // if zero is where num needs to be then move num left
                     moveLeft(num);
                 } else {
-                    if (Arrays.equals(zeroCoordinates, new int[]{numCoordinates[0], numCoordinates[1] + 1})) {
-                        // if the 0 is to the right of the number then move it above
+                    int[] zeroEndCoordinates = {numCoordinates[0] - 2, numCoordinates[1]};
+                    int zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
+                    int zeroX = zeroEndCoordinates[1] - zeroCoordinates[1];
+                    while (zeroY < 0) {
+                        // if zero is not in the correct position to start the sequence then move it
+                        moveUp(0);
+                        zeroCoordinates = find(0);
+                        zeroY = zeroEndCoordinates[0] - zeroCoordinates[0];
+                    }
+                    while (zeroX < 0) {
+                        // if zero is not in the correct position to start the sequence then move it
+                        moveLeft(0);
+                        zeroCoordinates = find(0);
+                        zeroX = zeroEndCoordinates[1] - zeroCoordinates[1];
+                    }
+                        moveLeft(0);
+                        moveDown(0);
+                        moveDown(0);
+                        moveRight(0);
                         moveUp(0);
                         moveLeft(0);
-                    }
-                    moveUp(0);
-                    moveLeft(0);
-                    moveDown(0);
-                    moveDown(0);
-                    moveRight(0);
-                    moveUp(0);
-                    moveLeft(0);
-                    moveUp(0);
-                    moveRight(0);
-                    break;
+                        moveUp(0);
+                        moveRight(0);
+                        break;
                 }
             } else if (Arrays.equals(numCoordinates, numEndCoordinates)) {
                 System.out.println("It's over now.");
@@ -295,13 +300,14 @@ public class SlidePuzzle {
                         }
                     } else if (zeroCoordinates[1] < boardLength - 1) {
                         // Zero will stay within the boundaries
+                        System.out.println("getting to this random spot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         if (xMoves > 0 && board[numCoordinates[0]][numCoordinates[1] + 1] == 0) {
                             // num can move right and needs to move right then move it right
                             moveRight(num);
                         } else if (board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num || board[zeroCoordinates[0]][zeroCoordinates[1] + 1] > num - boardLength && leftColumnNumber) {
                             // Zero can move right
                             moveRight(0);
-                        } else {
+                        } else if (zeroCoordinates[0] + 1 < boardLength) {
                             // if num needs to go up and zero is left of it and zero can 't go up...
                             moveDown(0);
                             moveRight(0);
@@ -313,6 +319,49 @@ public class SlidePuzzle {
                             } else {
                                 moveRight(num);
                             }
+                        } else {
+                            System.out.println("num is: " + num + " this weird issue is true.");
+                            // fix this issue. special thanks to Ben B-C.
+                            // 1,  2,  3,  4,
+                            // 5,  6,  7,  8,
+                            // 9,  10, 14, 15,
+                            // 13, 0,  11, 12
+                            moveLeft(0);
+                            moveUp(0);
+                            moveRight(0);
+                            moveRight(0);
+                            moveDown(0);
+                            moveLeft(0);
+                            moveUp(0);
+                            moveRight(0);
+                            moveDown(0);
+                            moveRight(0);
+                            moveUp(0);
+                            moveLeft(0);
+                            moveDown(0);
+                            moveLeft(0);
+                            moveLeft(0);
+                            moveUp(0);
+                            moveRight(0);
+                            moveRight(0);
+                            moveRight(0);
+                            moveDown(0);
+                            moveLeft(0);
+                            moveUp(0);
+                            moveLeft(0);
+                            moveLeft(0);
+                            moveDown(0);
+                            moveRight(0);
+                            moveRight(0);
+                            moveRight(0);
+                            moveUp(0);
+                            moveLeft(0);
+                            moveLeft(0);
+                            moveLeft(0);
+                            moveDown(0);
+                            moveRight(0);
+                            moveRight(0);
+                            moveRight(0);
                         }
                     } else if (zeroCoordinates[1] == boardLength - 1) {
                         moveLeft(0);
@@ -501,24 +550,11 @@ public class SlidePuzzle {
         }
     }
 
-//        1,  2,  3,  4,
-//        5,  6,  7,  8,
-//        9,  10, 14, 15,
-//        13, 0,  11, 12,
+
 
     public void dumb() {
-        moveLeft(0);
-        moveUp(0);
-        moveRight(0);
-        moveRight(0);
-        moveDown(0);
-        moveLeft(0);
-        moveUp(0);
-        moveRight(0);
-        moveDown(0);
-        moveRight(0);
-        moveUp(0);
-        moveRight(0);
+
+
 
     }
 }
